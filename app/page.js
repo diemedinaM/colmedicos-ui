@@ -8,7 +8,7 @@ export default function Home() {
           <div className="flex items-center justify-center mb-6">
             <Image 
               src="/colmedicos-ui/logo.svg" 
-              alt="Sofia" 
+              alt="Sofia Logo" 
               width={250} 
               height={128}
               priority
