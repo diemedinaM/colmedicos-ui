@@ -582,7 +582,7 @@ export default function CreateCredit() {
           <strong className="font-bold mb-1">Configuración de vigencia y actualización de tarifas</strong>
           <div className="flex flex-col gap-1 p-4 bg-green-100 rounded border border-green-300">
             <span>
-              <strong>Cliente:</strong> "METIS S.A.S."
+              <strong>Cliente:</strong> METIS S.A.S.
             </span>
             <span>
               <strong>Contratos activos:</strong> 1
