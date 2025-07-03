@@ -6,7 +6,13 @@ export default function Home() {
       <div className="bg-[#335dab] rounded-2xl p-12 flex flex-col items-center justify-center min-h-[500px] w-full max-w-5xl mx-auto mt-6 shadow">
         <div className="flex flex-col items-center">
           <div className="flex items-center justify-center mb-6">
-            <Image src="/logo.svg" alt="Sofia" width={250} height={128} />
+            <Image 
+              src="/colmedicos-ui/logo.svg" 
+              alt="Sofia" 
+              width={250} 
+              height={128}
+              priority
+            />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">¡Bienvenido a Sofia!</h1>
           <p className="text-lg text-white/80 mb-8 text-center max-w-2xl">
