@@ -20,11 +20,11 @@ export default function Home() {
           </p>
           <div className="flex gap-4 mb-8">
             <button className="flex items-center gap-2 px-6 py-3 bg-white text-[#6c6cf4] font-semibold rounded-full shadow hover:bg-gray-100 transition">
-              <span class="material-icons">medical_information</span>
+              <span className="material-icons">medical_information</span>
               Sistema Médico
             </button>
             <button className="flex items-center gap-2 px-6 py-3 bg-white text-[#6c6cf4] font-semibold rounded-full shadow hover:bg-gray-100 transition">
-              <span class="material-icons">medical_information</span>
+              <span className="material-icons">medical_information</span>
               Gestión Integral
             </button>
           </div>
