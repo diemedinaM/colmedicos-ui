@@ -20,15 +20,11 @@ export default function Home() {
           </p>
           <div className="flex gap-4 mb-8">
             <button className="flex items-center gap-2 px-6 py-3 bg-white text-[#6c6cf4] font-semibold rounded-full shadow hover:bg-gray-100 transition">
-              <span>
-                <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M6 3v7a6 6 0 0 0 12 0V3" stroke="#6c6cf4" strokeWidth="2" strokeLinecap="round"/><circle cx="18" cy="19" r="3" stroke="#6c6cf4" strokeWidth="2"/><path d="M18 16v-2a6 6 0 0 1-12 0v2" stroke="#6c6cf4" strokeWidth="2"/></svg>
-              </span>
+              <span class="material-icons">medical_information</span>
               Sistema Médico
             </button>
             <button className="flex items-center gap-2 px-6 py-3 bg-white text-[#6c6cf4] font-semibold rounded-full shadow hover:bg-gray-100 transition">
-              <span>
-                <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M3 17v-2a4 4 0 0 1 4-4h2m4 0h2a4 4 0 0 1 4 4v2" stroke="#6c6cf4" strokeWidth="2"/><circle cx="12" cy="7" r="4" stroke="#6c6cf4" strokeWidth="2"/></svg>
-              </span>
+              <span class="material-icons">medical_information</span>
               Gestión Integral
             </button>
           </div>
