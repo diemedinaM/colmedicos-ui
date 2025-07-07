@@ -721,6 +721,81 @@ export default function CreateCredit() {
         </form>
       )}
 
+      { tabActive === 'CECO' && (
+        <form className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">
+              ¿La empresa requiere creación de Centros de Costos?
+            </label>
+            <div className="flex gap-4">
+              <select className="w-full px-3 py-2 border border-gray-300 rounded">
+                <option>Si</option>
+                <option>No</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">
+              ¿Se requiere creación de Centros de Costos para direcciones especiales?
+            </label>
+            <div className="flex gap-4">
+              <select className="w-full px-3 py-2 border border-gray-300 rounded">
+                <option>Si</option>
+                <option>No</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <strong className="block text-sm font-medium text-gray-700 mb-2">
+              Resumen de centros de costos creados
+            </strong>
+            <div className="overflow-x-auto">
+              <table className="min-w-full border border-gray-300 text-sm">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border border-gray-300 px-2 py-1">ID</th>
+                    <th className="border border-gray-300 px-2 py-1">Nombre</th>
+                    <th className="border border-gray-300 px-2 py-1">Estado</th>
+                    <th className="border border-gray-300 px-2 py-1">Fecha de creación</th>
+                    <th className="border border-gray-300 px-2 py-1">Creado por</th>
+                    <th className="border border-gray-300 px-2 py-1">Observaciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 px-2 py-1 text-blue-700 underline cursor-pointer">101</td>
+                    <td className="border border-gray-300 px-2 py-1 text-blue-700 underline cursor-pointer">JNO EAS/01/TULUA</td>
+                    <td className="border border-gray-300 px-2 py-1 text-green-600 font-bold">ACTIVO</td>
+                    <td className="border border-gray-300 px-2 py-1">14/12/2023</td>
+                    <td className="border border-gray-300 px-2 py-1">Admin</td>
+                    <td className="border border-gray-300 px-2 py-1"></td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-2 py-1 text-blue-700 underline cursor-pointer">102</td>
+                    <td className="border border-gray-300 px-2 py-1 text-blue-700 underline cursor-pointer">JNO SAS/01/CRODA</td>
+                    <td className="border border-gray-300 px-2 py-1 text-green-600 font-bold">ACTIVO</td>
+                    <td className="border border-gray-300 px-2 py-1">14/12/2023</td>
+                    <td className="border border-gray-300 px-2 py-1">Admin</td>
+                    <td className="border border-gray-300 px-2 py-1"></td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-2 py-1 text-blue-700 underline cursor-pointer">103</td>
+                    <td className="border border-gray-300 px-2 py-1 text-blue-700 underline cursor-pointer">JNO EAS/01/TULUA</td>
+                    <td className="border border-gray-300 px-2 py-1 text-red-600 font-bold">INACTIVO</td>
+                    <td className="border border-gray-300 px-2 py-1">14/12/2023</td>
+                    <td className="border border-gray-300 px-2 py-1">Admin</td>
+                    <td className="border border-gray-300 px-2 py-1">*04/07/2025 Reemplazado por xxxxxxxxxxx</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        </form>
+      )}
+
       <div className="flex flex-col gap-4 justify-end mt-8">
         <div className="flex gap-2 justify-end">
           <button type="button" className="px-6 py-2 bg-blue-300 text-white rounded border border-gray-300 text-sm">Anterior</button>
