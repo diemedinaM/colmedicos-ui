@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Legal() {
     const listTabs = [
@@ -20,7 +21,7 @@ export default function Legal() {
     ];
     const [tabActive, setTabActive] = useState('Información jurídica');
     const [buttonActive, setButtonActive] = useState('Administración de contratos');
-    
+    const router = useRouter();
   
     return (
       <section className="mx-auto p-8 bg-white rounded-lg shadow">
@@ -71,12 +72,15 @@ export default function Legal() {
                     <td className="border border-gray-300 px-2 py-2">Sí</td>
                     <td className="border border-gray-300 px-2 py-2">
                       <span className="inline-flex items-center gap-1">
-                        <span className="text-green-700 font-semibold">Cliente nuevo</span>
+                        <span className="font-semibold">Cliente nuevo</span>
                       </span>
                     </td>
                     <td className="border border-gray-300 px-2 py-2 flex gap-1">
+                      <button disabled className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
+                      <button disabled className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
+                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
+                      <button disabled className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
                     </td>
                   </tr>
                   <tr className="bg-gray-50">
@@ -102,7 +106,7 @@ export default function Legal() {
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1">Registrar movimiento</button>
+                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
                       <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
                     </td>
                   </tr>
@@ -129,7 +133,7 @@ export default function Legal() {
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1">Registrar movimiento</button>
+                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
                       <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
                     </td>
                   </tr>
@@ -152,7 +156,7 @@ export default function Legal() {
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1">Registrar movimiento</button>
+                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
                       <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
                     </td>
                   </tr>
@@ -175,7 +179,7 @@ export default function Legal() {
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1">Registrar movimiento</button>
+                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
                       <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
                     </td>
                   </tr>
@@ -228,7 +232,7 @@ export default function Legal() {
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1">Registrar movimiento</button>
+                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
                       <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
                     </td>
                   </tr>
@@ -280,7 +284,7 @@ export default function Legal() {
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1">Registrar movimiento</button>
+                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
                       <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
                     </td>
                   </tr>
@@ -304,7 +308,7 @@ export default function Legal() {
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1">Registrar movimiento</button>
+                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
                       <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
                     </td>
                   </tr>
@@ -328,7 +332,7 @@ export default function Legal() {
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
                       <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1">Registrar movimiento</button>
+                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
                       <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
                     </td>
                   </tr>

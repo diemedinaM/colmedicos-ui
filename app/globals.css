@@ -29,3 +29,12 @@ body {
 select {
   height: 42px;
 }
+
+select:disabled {
+  background-color: #afb2b6;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

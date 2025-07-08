@@ -421,6 +421,307 @@ export default function CreateCredit() {
         </form>
       )}
 
+      { tabActive === 'Información facturación' && (
+        <form className="flex flex-col gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Modalidad de pago</label>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded" disabled>
+              <option value="credito">Crédito</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Frecuencia de facturación</label>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded" disabled>
+              <option value="credito">Mensual</option>
+              <option value="credito">Quincenal</option>
+              <option value="credito">Semanal</option>
+              <option value="credito">Diario</option>
+              <option value="credito">Personalizado</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Frecuencia personalizada</label>
+            <div className="grid grid-cols-2 gap-2">
+              <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el número de días" />
+              <select className="w-full px-3 py-2 border border-gray-300 rounded">
+                <option>Días</option>
+                <option>Meses</option>
+                <option>Años</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Corte(s) de facturación</label>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" className="w-4 h-4 border border-gray-300 rounded" />
+              <label className="text-sm font-medium text-gray-700">Del primer al último día del mes</label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" className="w-4 h-4 border border-gray-300 rounded" />
+              <label className="text-sm font-medium text-gray-700">Selecciónar periodo</label>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 required">Desde</label>
+              <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 required">Hasta</label>
+              <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded" />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Fecha máxima de radicación de factura</label>
+            <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">¿ Aplica orden de compra ?</label>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded">
+              <option>Si</option>
+              <option>No</option>
+            </select>              
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Correo facturación electrónica</label>
+            <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el correo electrónico" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Correo(s) alternos envió factura</label>
+            <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el correo electrónico" />
+          </div>
+          <button type="button" className="px-6 py-2 bg-gray-200 rounded border border-gray-300 text-sm">+ Agregar correo alterno</button>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Contacto empresa facturación</label>
+            <section className="flex flex-wrap gap-2">
+              { [1,2].map(item => (
+                <article className="flex flex-col gap-2 bg-gray-100 p-4 rounded max-w-sm w-full" key={item}>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Nombre</label>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el nombre" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Cargo</label>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el cargo" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Correo</label>
+                    <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el correo electrónico" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Celular</label>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el celular" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Area</label>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el área" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Ciudad</label>
+                    <select className="w-full px-3 py-2 border border-gray-300 rounded">
+                      <option>Medellín</option>
+                    </select>
+                  </div>
+                </article>
+              ))}
+              <button type="button" className="px-6 py-2 bg-gray-200 rounded border border-gray-300 text-sm max-w-sm min-h-[480px] w-full">+ Agregar contacto jurídico</button>
+            </section>        
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Cliente responsable del pago - Pagador</label>
+            <div className="flex items-center gap-2">
+              <input type="radio" className="w-4 h-4 border border-gray-300 rounded" />
+              <label className="text-sm font-medium text-gray-700">Este cliente es su propio responsable de pago</label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="radio" className="w-4 h-4 border border-gray-300 rounded" />
+              <label className="text-sm font-medium text-gray-700">Otro cliente es responsable de pago</label>
+            </div>
+
+            <select className="w-full px-3 py-2 border border-gray-300 rounded">
+              <option>Seleccionar cliente</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">¿ Tiene plataforma de autogestión ?</label>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded">
+              <option>Si</option>
+              <option>No</option>
+            </select>              
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Link de acceso plataforma</label>
+            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el link" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Usuario de ingreso</label>
+            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el usuario" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Contraseña de ingreso</label>
+            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese la contraseña" />
+          </div>
+
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Requiere condiciones especiales de facturación</label>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded">
+              <option>Si</option>
+              <option>No</option> 
+            </select>              
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Observación</label>
+            <textarea className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese la observación" />
+          </div>              
+        </form>
+      )}
+
+      { tabActive == 'Información cartera' && (
+        <form className="flex flex-col gap-4">
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Plazo de pago para el cliente (días)</label>
+            <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el plazo de pago" />
+          </div>        
+
+          <div className="overflow-x-auto">
+            <table className="min-w-full border border-gray-300 rounded text-sm">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-2 py-2 border-b border-gray-300 text-left font-semibold">ID</th>
+                  <th className="px-2 py-2 border-b border-gray-300 text-left font-semibold">Tipo</th>
+                  <th className="px-2 py-2 border-b border-gray-300 text-left font-semibold">Segmento</th>
+                  <th className="px-2 py-2 border-b border-gray-300 text-left font-semibold">Plazo de pago (Días)</th>
+                  <th className="px-2 py-2 border-b border-gray-300 text-left font-semibold">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="px-2 py-2 border-b border-gray-200">1</td>
+                  <td className="px-2 py-2 border-b border-gray-200">Modalidad de Atención</td>
+                  <td className="px-2 py-2 border-b border-gray-200">
+                    <select className="border border-gray-300 rounded px-2 py-1 w-full bg-white">
+                      <option>Extramural</option>
+                      <option>Sedes propias</option>
+                    </select>
+                  </td>
+                  <td className="px-2 py-2 border-b border-gray-200">
+                    <input type="number" className="border border-gray-300 rounded px-2 py-1 w-16" value={30} min={0} />
+                  </td>
+                  <td className="px-2 py-2 border-b border-gray-200 flex gap-2">
+                    <button type="button" className="text-blue-600 hover:text-blue-800 px-2 py-2" title="Editar">
+                      <i className="material-icons">edit</i>
+                    </button>
+                    <button type="button" className="text-red-600 hover:text-red-800 px-2 py-2" title="Eliminar">
+                      <i className="material-icons">delete</i>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-2 py-2 border-b border-gray-200">2</td>
+                  <td className="px-2 py-2 border-b border-gray-200">Unidad de negocio</td>
+                  <td className="px-2 py-2 border-b border-gray-200">
+                    <select className="border border-gray-300 rounded px-2 py-1 w-full bg-white">
+                      <option>Q&Darte</option>
+                    </select>
+                  </td>
+                  <td className="px-2 py-2 border-b border-gray-200">
+                    <input type="number" className="border border-gray-300 rounded px-2 py-1 w-16" value={60} min={0} />
+                  </td>
+                  <td className="px-2 py-2 border-b border-gray-200 flex gap-2">
+                    <button type="button" className="text-blue-600 hover:text-blue-800 px-2 py-2" title="Editar">
+                      <i className="material-icons">edit</i>
+                    </button>
+                    <button type="button" className="text-red-600 hover:text-red-800 px-2 py-2" title="Eliminar">
+                      <i className="material-icons">delete</i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">¿ Tiene plataforma de autogestión ?</label>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded">
+              <option>Si</option>
+              <option>No</option>
+            </select>              
+          </div>        
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Link de acceso plataforma</label>
+            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el link" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Usuario de ingreso</label>
+            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el usuario" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Contraseña de ingreso</label>
+            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese la contraseña" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Contacto empresa cartera</label>
+            <section className="flex flex-wrap gap-2">
+              { [1,2].map(item => (
+                <article className="flex flex-col gap-2 bg-gray-100 p-4 rounded max-w-sm w-full" key={item}>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Nombre</label>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el nombre" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Cargo</label>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el cargo" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Correo</label>
+                    <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el correo electrónico" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Celular</label>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el celular" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Area</label>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el área" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Ciudad</label>
+                    <select className="w-full px-3 py-2 border border-gray-300 rounded">
+                      <option>Medellín</option>
+                    </select>
+                  </div>
+                </article>
+              ))}
+              <button type="button" className="px-6 py-2 bg-gray-200 rounded border border-gray-300 text-sm max-w-sm min-h-[480px] w-full">+ Agregar otro contacto</button>
+            </section>        
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Observación</label>
+            <textarea className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese la observación" />
+          </div> 
+        </form>
+      )}
+
+
+
+
+
       { tabActive === 'Tarifas' && (
         <form className="flex flex-col gap-4">
           <div className="grid grid-cols-1 gap-4">
