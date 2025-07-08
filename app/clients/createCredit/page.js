@@ -1,8 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { commonService } from "@/services/commonService";
+import { filesService } from "@/services/filesService";
 
 export default function CreateCredit() {
+  const [model, setModel] = useState({
+    company_group_active: "false",
+    company_group: {
+      company_groups: 0
+    },
+    legal_information: {
+      commercial_agreement: ""
+    },
+    agreement_information: {
+      service_net: true,
+      restricted_cities_required: true,
+      products_required: true,
+      vip_appointments: true,
+      extra_unit: true,
+      health_prevent: true,
+      has_professional: true,
+      restricted_cities: [
+        0
+      ],
+      cities: [
+        0
+      ],
+      products: [
+        0
+      ]
+    },
+    rut: "",
+    chamber_of_commerce: "",
+    document_number: "",
+    verification_digit: "",
+    name: "",
+    alias: "",
+    address: "",
+    converted_address: "",
+    email: "",
+    phone: "",
+    employees: 0,
+    document_type: 0,
+    taxpayer_type: 0,
+    business_structure: 0,
+    tax_liability: 0,
+    economic_activity: 0,
+    sector: 0,
+    country: 0,
+    province: 0,
+    city: 0,
+    arl: 0,
+    insurance_provider: 0
+  });
+  
   const listTabs = [
     'Información general',
     'Grupo empresarial',
@@ -23,6 +75,104 @@ export default function CreateCredit() {
     'Relaciónamiento'
   ];
   const [tabActive, setTabActive] = useState('Información general');
+  const [listDocumentType, setListDocumentType] = useState([]);
+  const [listTaxLiability, setListTaxLiability] = useState([]);
+  const [listBusinessStructure, setListBusinessStructure] = useState([]);
+  const [listCompanyType, setListCompanyType] = useState([]);
+  const [listEconomicActivity, setListEconomicActivity] = useState([]);
+  const [listSector, setListSector] = useState([]);
+  const [listCountry, setListCountry] = useState([]);
+  const [listProvince, setListProvince] = useState([]);
+  const [listCity, setListCity] = useState([]); 
+  const [listARL, setListARL] = useState([]);
+  const [listInsuranceProvider, setListInsuranceProvider] = useState([]);
+  const [listCompanyGroup, setListCompanyGroup] = useState([]);
+
+  const getDocumentType = async () => {
+    const response = await commonService.getDocumentType();
+    setListDocumentType(response.results);
+  };
+
+  const getTaxLiability = async () => {
+    const response = await commonService.getTaxLiability();
+    setListTaxLiability(response.results);
+  };
+
+  const getBusinessStructure = async () => {
+    const response = await commonService.getBusinessStructure();
+    setListBusinessStructure(response.results);
+  };
+
+  const getCompanyType = async () => {
+    const response = await commonService.getCompanyType();
+    setListCompanyType(response.results);
+  };
+
+  const getEconomicActivity = async () => {
+    const response = await commonService.getEconomicActivity();
+    setListEconomicActivity(response.results);
+  };
+
+  const getSector = async () => {
+    const response = await commonService.getSector();
+    setListSector(response.results);
+  };
+
+  const getCountry = async () => {
+    const response = await commonService.getCountry();
+    setListCountry(response.results);
+  };
+
+  const getProvince = async () => {
+    const response = await commonService.getProvince();
+    setListProvince(response.results);
+  };
+
+  const getCity = async () => {
+    const response = await commonService.getCity();
+    setListCity(response.results);
+  };
+
+  const getARL = async () => {
+    const response = await commonService.getArl ();
+    setListARL(response.results);
+  };
+
+  const getInsuranceProvider = async () => {
+    const response = await commonService.getInsuranceProvider();
+    setListInsuranceProvider(response.results);
+  };
+
+  const getCompanyGroup = async () => {
+    const response = await commonService.getCompanyGroup();
+    setListCompanyGroup(response.results);
+  };
+
+  const uploadDocument = async (e, field) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await filesService.uploadFile(formData);
+    if (field === 'rut') {
+      setModel({...model, rut: response.results.url});
+    }
+  };
+
+  useEffect(() => {
+    getDocumentType();
+    getTaxLiability();
+    getBusinessStructure();
+    getCompanyType();
+    getEconomicActivity();
+    getSector();
+    getCountry();
+    getProvince();
+    getCity();
+    getARL();
+    getInsuranceProvider();
+    getCompanyGroup();
+  }, []);
+
 
   return (
     <section className="mx-auto p-8 bg-white rounded-lg shadow">
@@ -49,54 +199,61 @@ export default function CreateCredit() {
               <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1 required">RUT</label>
                   <div className="flex items-center gap-2">
-                  <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el RUT" />
-                  <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs">Subir</button>
+                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el RUT" value={model.rut} readOnly />
+                    <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'rut')} id="fileRut" />
+                    <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileRut').click()}>Subir</button>
                   </div>
               </div>
               <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1 required">Cámara de comercio</label>
                   <div className="flex items-center gap-2">
-                  <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el número de cámara de comercio" />
-                  <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs">Subir</button>
+                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el número de cámara de comercio" value={model.chamber_of_commerce} readOnly />
+                    <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'chamber_of_commerce')} id="fileChamberOfCommerce" />
+                    <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileChamberOfCommerce').click()}>Subir</button>
                   </div>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de documento</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                <option>NIT</option>
-                </select>
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" value="900889905" readOnly />
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Dígito de verificación</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" value="2" readOnly />
-            </div>
-
+              <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de documento</label>
+                  <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, document_type: e.target.value})}>
+                    {listDocumentType.map(documentType => (
+                      <option key={documentType.id} value={documentType.id}>{documentType.name}</option>
+                    ))}
+                  </select>
+              </div>
+              <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento</label>
+                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, document_number: e.target.value})} placeholder="Ingrese el número de documento" />
+              </div>
+              <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Dígito de verificación</label>
+                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, verification_digit: e.target.value})} placeholder="Ingrese el dígito de verificación" />
+              </div>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de Contribuyente</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                <option>Persona Jurídica</option>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, taxpayer_type: e.target.value})}>
+                <option>-</option>
                 </select>
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de régimen</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                <option>Común</option>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, business_structure: e.target.value})}>
+                  {listBusinessStructure.map(businessStructure => (
+                    <option key={businessStructure.id} value={businessStructure.id}>{businessStructure.text}</option>
+                  ))}
                 </select>
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Responsabilidad fiscal</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                <option>No Responsable</option>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, tax_liability: e.target.value})}>
+                  {listTaxLiability.map(taxLiability => (
+                    <option key={taxLiability.id} value={taxLiability.id}>{taxLiability.text}</option>
+                  ))}
                 </select>
             </div>
             </div>
@@ -104,12 +261,14 @@ export default function CreateCredit() {
             <div className="grid grid-cols-2 gap-4">
                 <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Razón social</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese la razón social" />
+                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese la razón social" onChange={(e) => setModel({...model, name: e.target.value})} />
                 </div>
                 <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de sociedad</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                    <option>S.A.S.</option>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, company_type: e.target.value})}>
+                  {listCompanyType.map(companyType => (
+                    <option key={companyType.id} value={companyType.id}>{companyType.text}</option>
+                  ))}
                 </select>
                 </div>
             </div>
@@ -117,21 +276,25 @@ export default function CreateCredit() {
             <div className="grid grid-cols-1 gap-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Nombre comercial</label>
-                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" value="METIS" readOnly />
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, alias: e.target.value})} placeholder="Ingrese el nombre comercial" />
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Actividad económica</label>
                     <div className="grid grid-cols-[1fr_4fr] gap-4">
-                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" value="6202" readOnly />
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                    <option>Actividades de consultoría informática y administración de instalaciones informáticas</option>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, economic_activity_name: e.target.value})} placeholder="Ingrese la actividad económica" />
+                    <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, economic_activity: e.target.value})}>
+                      {listEconomicActivity.map(economicActivity => (
+                        <option key={economicActivity.id} value={economicActivity.id}>{economicActivity.text}</option>
+                      ))}
                     </select>
                     </div>
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Sector económico</label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                    <option>Sector tecnología y comunicaciones</option>
+                    <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, sector: e.target.value})}>
+                      {listSector.map(sector => (
+                        <option key={sector.id} value={sector.id}>{sector.text}</option>
+                      ))}
                     </select>
                 </div>
             </div>
@@ -139,20 +302,26 @@ export default function CreateCredit() {
             <div className="grid grid-cols-3 gap-4">
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">País</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                <option>Colombia</option>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, country: e.target.value})}>
+                  {listCountry.map(country => (
+                    <option key={country.id} value={country.id}>{country.name}</option>
+                  ))}
                 </select>
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Región</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                <option>Antioquia</option>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, province: e.target.value})}>
+                  {listProvince.map(province => (
+                    <option key={province.id} value={province.id}>{province.name}</option>
+                  ))}
                 </select>
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Municipio</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                <option>Medellín</option>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, city: e.target.value})}>
+                  {listCity.map(city => (
+                    <option key={city.id} value={city.id}>{city.name}</option>
+                  ))}
                 </select>
             </div>
             </div>
@@ -160,29 +329,29 @@ export default function CreateCredit() {
             <div className="grid grid-cols-2 gap-4">
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Dirección</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese la dirección" />
+                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese la dirección" onChange={(e) => setModel({...model, address: e.target.value})} />
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Codificación DIAN</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" value="CL 50 46 36" readOnly />
+                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, dian_code: e.target.value})} placeholder="Ingrese la codificación DIAN" />
             </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Correo electrónico reportado en el RUT</label>
-                    <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded" value="info@colmedicos.com" readOnly />
+                    <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, email: e.target.value})} placeholder="Ingrese el correo electrónico" />
                 </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Teléfono reportado en el RUT</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" value="3127811049" readOnly />
+                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, phone: e.target.value})} placeholder="Ingrese el teléfono" />
             </div>
             </div>
 
             <div className="grid grid-cols-1">
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Número de empleados*</label>
-                <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded" value="200" readOnly />
+                <label className="block text-sm font-medium text-gray-700 mb-1 required">Número de empleados</label>
+                <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, employees: e.target.value})} placeholder="Ingrese el número de empleados" />
             </div>
             </div>
 
@@ -193,27 +362,30 @@ export default function CreateCredit() {
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento</label>
                     <div className="flex items-center gap-2">
-                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el documento" />
-                    <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs">Subir</button>
+                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el documento" value={model.document_number} readOnly />
+                    <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'document_number')} id="fileDocumentNumber" />
+                    <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileDocumentNumber').click()}>Subir</button>
                     </div>
                 </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de documento</label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                        <option>Cédula de ciudadanía</option>
+                    <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, document_type: e.target.value})}>
+                      {listDocumentType.map(documentType => (
+                        <option key={documentType.id} value={documentType.id}>{documentType.name}</option>
+                      ))}
                     </select>
                 </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Numero de Identificación</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" value="3127811049" readOnly />
+                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, document_number: e.target.value})} placeholder="Ingrese el número de identificación" />
             </div>
             </div>
             <div className="grid grid-cols-1">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Nombre Completo</label>
-                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el nombre completo" />
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el nombre completo" value={model.name} onChange={(e) => setModel({...model, name: e.target.value})} />
                 </div>
             </div>
             <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-sm">+ Agregar representante legal</button>
@@ -223,14 +395,18 @@ export default function CreateCredit() {
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">ARL</label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                        <option>SURA</option>
+                    <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, arl: e.target.value})}>
+                        {listARL.map(arl => (
+                          <option key={arl.id} value={arl.id}>{arl.name}</option>
+                        ))}
                     </select>
                 </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Corredor de seguros</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded">
-                    <option>Alianz</option>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, insurance_provider: e.target.value})}>
+                    {listInsuranceProvider.map(insuranceProvider => (
+                      <option key={insuranceProvider.id} value={insuranceProvider.id}>{insuranceProvider.name}</option>
+                    ))}
                 </select>
             </div>
             </div>
@@ -241,18 +417,21 @@ export default function CreateCredit() {
         <form className="flex flex-col gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 required">La empresa pertenece a un grupo empresarial</label>
-            <select className="w-full px-3 py-2 border border-gray-300 rounded">
-              <option>Si</option>
-              <option>No</option>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, company_group_active: e.target.value})}>
+              <option value="true">Si</option>
+              <option value="false">No</option>
             </select>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 required">Grupo empresarial</label>
-            <select className="w-full px-3 py-2 border border-gray-300 rounded">
-              <option>Nombre de grupo empresarial</option>
-              <option>Nombre de grupo empresarial</option>
-            </select>
-          </div>
+          {model.company_group_active === 'true' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 required">Grupo empresarial</label>
+              <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, company_group: e.target.value})}>
+                {listCompanyGroup.map(companyGroup => (
+                  <option key={companyGroup.id} value={companyGroup.id}>{companyGroup.text}</option>
+                ))}
+              </select>
+            </div>
+          )}
         </form>
       )}
 
@@ -260,7 +439,7 @@ export default function CreateCredit() {
         <form className="flex flex-col gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 required">Require Red de Servicios</label>
-            <select className="w-full px-3 py-2 border border-gray-300 rounded">
+            <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, service_net: e.target.value})}>
               <option>Si</option>
               <option>No</option>
             </select>
@@ -268,7 +447,7 @@ export default function CreateCredit() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 required">Require activar Red Restringida</label>
             <div className="grid grid-cols-[1fr_4fr] gap-4">
-              <select className="w-full px-3 py-2 border border-gray-300 rounded">
+              <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, restricted_cities_required: e.target.value})}>
                 <option>Si</option>
                 <option>No</option>
               </select>
@@ -280,7 +459,7 @@ export default function CreateCredit() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 required">Require bloquear ciudades de la Red de servicios estándar</label>
             <div className="grid grid-cols-[1fr_4fr] gap-4">
-              <select className="w-full px-3 py-2 border border-gray-300 rounded">
+              <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, restricted_cities_required: e.target.value})}>
                 <option>Si</option>
                 <option>No</option>
               </select>
@@ -292,7 +471,7 @@ export default function CreateCredit() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 required">Tiene restricción para atención en productos</label>
             <div className="grid grid-cols-[1fr_4fr] gap-4">
-              <select className="w-full px-3 py-2 border border-gray-300 rounded">
+              <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, products_required: e.target.value})}>
                 <option>Si</option>
                 <option>No</option>
               </select>
@@ -365,15 +544,17 @@ export default function CreateCredit() {
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento que regula la relación comercial</label>
                 <div className="flex items-center gap-2">
-                <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el documento" />
-                <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs">Subir</button>
+                  <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el documento" value={model.commercial_agreement} readOnly />
+                  <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'commercial_agreement')} id="fileCommercialAgreement" />
+                  <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileCommercialAgreement').click()}>Subir</button>
                 </div>
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Certificados legales vigentes y/o anexos</label>                
                 <div className="flex items-center gap-2">
-                  <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el certificado" />
-                  <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs">Subir</button>
+                  <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el certificado" value={model.legal_certificates} readOnly />
+                  <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'legal_certificates')} id="fileLegalCertificates" />
+                  <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileLegalCertificates').click()}>Subir</button>
                 </div>
                 <button type="button" className="w-full mt-2 px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs">+ Agregar certificado</button>
             </div>
@@ -717,10 +898,6 @@ export default function CreateCredit() {
           </div> 
         </form>
       )}
-
-
-
-
 
       { tabActive === 'Tarifas' && (
         <form className="flex flex-col gap-4">

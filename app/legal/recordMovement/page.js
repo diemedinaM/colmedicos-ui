@@ -14,7 +14,14 @@ export default function RecordMovement() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Tipo de movimiento</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Creación de contrato</option>
+                <option value="Creación de contrato">Creación de contrato</option>
+                <option value="Prorroga">Prorroga</option>
+                <option value="Renovación">Renovación</option>
+                <option value="Modificación Contractual">Modificación Contractual</option>
+                <option value="Terminación anticipada">Terminación anticipada</option>
+                <option value="Suspensión Contractual">Suspensión Contractual</option>
+                <option value="Reactivación Contractual">Reactivación Contractual</option>
+                <option value="Proceso judicial en proceso">Proceso judicial en proceso</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
@@ -35,8 +42,9 @@ export default function RecordMovement() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Tipo de cliente</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Privado</option>
-                <option>Público</option>
+                <option value="Privado">Privado</option>
+                <option value="Público">Público</option>
+                <option value="Mixto">Mixto</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
@@ -56,8 +64,8 @@ export default function RecordMovement() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Tipo de vinculación</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Contrato</option>
-                <option>Convenio</option>
+                <option value="Contrato">Contrato</option>
+                <option value="Acuerdo comercial">Acuerdo comercial</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
@@ -79,8 +87,8 @@ export default function RecordMovement() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Estado de la vinculación</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Activo</option>
-                <option>Inactivo</option>
+                <option value="Vigente">Vigente</option>
+                <option value="Vencido">Vencido</option>
               </select>
             </div>
             
@@ -94,8 +102,8 @@ export default function RecordMovement() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Condiciones de prorroga o renovación</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Automatica (Prorroga)</option>
-                <option>Manual</option>
+                <option value="Automatica (Prorroga)">Automatica (Prórroga)</option>
+                <option value="Otrosí o nuevo contrato (Renovacion)">Otrosí o nuevo contrato (Renovación)</option>
               </select>
             </div>
 
@@ -301,7 +309,8 @@ export default function RecordMovement() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Tipo de movimiento</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Creación de póliza</option>
+                <option value="Creación de póliza">Creación de póliza</option>
+                <option value="Movimiento en póliza">Movimiento en póliza</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">

@@ -10,11 +10,8 @@ const menuItems = [
     submenu: [{
       label: "Creación - Credito",
       href: "/clients/createCredit"
-    }]
-  },
-  {
-    label: "2. Juridico",
-    submenu: [{
+    },
+    {
       label: "Panel de Gestión Documental",
       href: "/legal"
     }]
