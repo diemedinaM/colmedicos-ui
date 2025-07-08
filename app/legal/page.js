@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { clientsService } from "@/services/clientsService";
 
 export default function Legal() {
     const listTabs = [
@@ -22,6 +23,23 @@ export default function Legal() {
     const [tabActive, setTabActive] = useState('Información jurídica');
     const [buttonActive, setButtonActive] = useState('Administración de contratos');
     const router = useRouter();
+    const [listContracts, setListContracts] = useState([]);
+    const [listPolicies, setListPolicies] = useState([]);
+
+    const getContracts = async () => {
+      const response = await clientsService.getClientContract();
+      setListContracts(response.results);
+    };
+
+    const getPolicies = async () => {
+      const response = await clientsService.getClientPolicy();
+      setListPolicies(response.results);
+    };
+
+    useEffect(() => {
+      getContracts();
+      getPolicies();
+    }, []);
   
     return (
       <section className="mx-auto p-8 bg-white rounded-lg shadow">
@@ -41,7 +59,7 @@ export default function Legal() {
 
             <strong className="font-bold mb-4">{buttonActive} - Cliente</strong>
 
-            {buttonActive === 'Administración de contratos' && (
+            { buttonActive === 'Administración de contratos' && (
             <div className="overflow-x-auto mt-6">
               <table className="min-w-full border border-gray-300 text-xs">
                 <thead>
@@ -60,135 +78,37 @@ export default function Legal() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="bg-white">
-                    <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">807878878</td>
-                    <td className="border border-gray-300 px-2 py-2">Cliente Nuevo S.A.S</td>
-                    <td className="border border-gray-300 px-2 py-2">Público</td>
-                    <td className="border border-gray-300 px-2 py-2">1</td>
-                    <td className="border border-gray-300 px-2 py-2">Contrato</td>
-                    <td className="border border-gray-300 px-2 py-2">2024/02/13</td>
-                    <td className="border border-gray-300 px-2 py-2">2025/07/12</td>
-                    <td className="border border-gray-300 px-2 py-2">Automática (Prórroga)</td>
-                    <td className="border border-gray-300 px-2 py-2">Sí</td>
-                    <td className="border border-gray-300 px-2 py-2">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="font-semibold">Cliente nuevo</span>
-                      </span>
-                    </td>
-                    <td className="border border-gray-300 px-2 py-2 flex gap-1">
-                      <button disabled className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
-                      <button disabled className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
-                      <button disabled className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
-                    </td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">800226175</td>
-                    <td className="border border-gray-300 px-2 py-2">COLMENA S.A</td>
-                    <td className="border border-gray-300 px-2 py-2">Público</td>
-                    <td className="border border-gray-300 px-2 py-2">1</td>
-                    <td className="border border-gray-300 px-2 py-2">Contrato</td>
-                    <td className="border border-gray-300 px-2 py-2">2024/02/13</td>
-                    <td className="border border-gray-300 px-2 py-2">2025/07/12</td>
-                    <td className="border border-gray-300 px-2 py-2">Automática (Prórroga)</td>
-                    <td className="border border-gray-300 px-2 py-2">Sí</td>
-                    <td className="border border-gray-300 px-2 py-2">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-yellow-700 font-semibold whitespace-nowrap">Próximo a vencer</span>
-                        <div className="relative mr-auto">
-                          <span title="Alerta" className="ml-1">🔔</span>
-                          <span className="absolute -top-2 -right-4 text-xs px-2 py-0.5"></span>
-                        </div>
-                      </span>
-                    </td>
-                    <td className="border border-gray-300 px-2 py-2 flex gap-1">
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
-                    </td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">900341086</td>
-                    <td className="border border-gray-300 px-2 py-2">Comercial Nutresa S.A.S.</td>
-                    <td className="border border-gray-300 px-2 py-2">Privado</td>
-                    <td className="border border-gray-300 px-2 py-2">1</td>
-                    <td className="border border-gray-300 px-2 py-2">Acuerdo Comercial</td>
-                    <td className="border border-gray-300 px-2 py-2">2021/03/01</td>
-                    <td className="border border-gray-300 px-2 py-2">2024/02/28</td>
-                    <td className="border border-gray-300 px-2 py-2">No aplica</td>
-                    <td className="border border-gray-300 px-2 py-2">No aplica</td>
-                    <td className="border border-gray-300 px-2 py-2">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-red-700 font-semibold">Vencido</span>
-                        <div className="relative mr-auto">
-                          <span title="Alerta" className="ml-1">🔔</span>
-                          <span className="absolute -top-2 -right-4 text-xs px-2 py-0.5">2</span>
-                        </div>
-                      </span>
-                    </td>
-                    <td className="border border-gray-300 px-2 py-2 flex gap-1">
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
-                    </td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">860050906</td>
-                    <td className="border border-gray-300 px-2 py-2">Adecco Colombia S.A.</td>
-                    <td className="border border-gray-300 px-2 py-2">Privado</td>
-                    <td className="border border-gray-300 px-2 py-2">1</td>
-                    <td className="border border-gray-300 px-2 py-2">Contrato</td>
-                    <td className="border border-gray-300 px-2 py-2">2017/08/02</td>
-                    <td className="border border-gray-300 px-2 py-2">02/08/2025</td>
-                    <td className="border border-gray-300 px-2 py-2">Automática (Prórroga)</td>
-                    <td className="border border-gray-300 px-2 py-2">Sí</td>
-                    <td className="border border-gray-300 px-2 py-2">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-green-700 font-semibold">Vigente</span>
-                      </span>
-                    </td>
-                    <td className="border border-gray-300 px-2 py-2 flex gap-1">
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
-                    </td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">860050906</td>
-                    <td className="border border-gray-300 px-2 py-2">Adecco Colombia S.A.</td>
-                    <td className="border border-gray-300 px-2 py-2">Privado</td>
-                    <td className="border border-gray-300 px-2 py-2">2</td>
-                    <td className="border border-gray-300 px-2 py-2">Contrato</td>
-                    <td className="border border-gray-300 px-2 py-2">2019/10/11</td>
-                    <td className="border border-gray-300 px-2 py-2">2025/09/10</td>
-                    <td className="border border-gray-300 px-2 py-2">Otro sí o nuevo contrato (Renovación)</td>
-                    <td className="border border-gray-300 px-2 py-2">Sí</td>
-                    <td className="border border-gray-300 px-2 py-2">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-green-700 font-semibold">Vigente</span>
-                      </span>
-                    </td>
-                    <td className="border border-gray-300 px-2 py-2 flex gap-1">
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
-                    </td>
-                  </tr>
+                  {listContracts.map(contract => (
+                    <tr className="bg-white">
+                      <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">807878878</td>
+                      <td className="border border-gray-300 px-2 py-2">Cliente Nuevo S.A.S</td>
+                      <td className="border border-gray-300 px-2 py-2">Público</td>
+                      <td className="border border-gray-300 px-2 py-2">1</td>
+                      <td className="border border-gray-300 px-2 py-2">Contrato</td>
+                      <td className="border border-gray-300 px-2 py-2">2024/02/13</td>
+                      <td className="border border-gray-300 px-2 py-2">2025/07/12</td>
+                      <td className="border border-gray-300 px-2 py-2">Automática (Prórroga)</td>
+                      <td className="border border-gray-300 px-2 py-2">Sí</td>
+                      <td className="border border-gray-300 px-2 py-2">
+                        <span className="inline-flex items-center gap-1">
+                          <span className="font-semibold">Cliente nuevo</span>
+                        </span>
+                      </td>
+                      <td className="border border-gray-300 px-2 py-2 flex gap-1">
+                        <button disabled className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
+                        <button disabled className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
+                        <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
+                        <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
+                        <button disabled className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
             )}
 
-            {buttonActive === 'Administración de pólizas' && (
+            { buttonActive === 'Administración de pólizas' && (
             <div className="overflow-x-auto mt-6">
               <table className="min-w-full border border-gray-300 text-xs">
                 <thead>
@@ -208,139 +128,40 @@ export default function Legal() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="bg-white">
-                    <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">800226175</td>
-                    <td className="border border-gray-300 px-2 py-2">COLMENA SEGUROS S.A.</td>
-                    <td className="border border-gray-300 px-2 py-2">Seguro de complimiento</td>
-                    <td className="border border-gray-300 px-2 py-2">DAVISA</td>
-                    <td className="border border-gray-300 px-2 py-2">SURA</td> 
-                    <td className="border border-gray-300 px-2 py-2">1-1</td>
-                    <td className="border border-gray-300 px-2 py-2">$2.000.000</td>
-                    <td className="border border-gray-300 px-2 py-2">2024/02/13</td>
-                    <td className="border border-gray-300 px-2 py-2">2025/07/12</td>
-                    <td className="border border-gray-300 px-2 py-2">Automática (Prórroga)</td>
-                    <td className="border border-gray-300 px-2 py-2">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-yellow-700 font-semibold whitespace-nowrap">Próximo a vencer</span>
-                        <div className="relative mr-auto">
-                          <span title="Alerta" className="ml-1">🔔</span>
-                          <span className="absolute -top-2 -right-4 text-xs px-2 py-0.5"></span>
-                        </div>
-                      </span>
-                    </td>
-                    <td className="border border-gray-300 px-2 py-2 flex gap-1">
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
-                    </td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">800226175</td>
-                    <td className="border border-gray-300 px-2 py-2">COLMENA SEGUROS S.A.</td>
-                    <td className="border border-gray-300 px-2 py-2">Seguro de Responsabilidad civil</td>
-                    <td className="border border-gray-300 px-2 py-2">DAVISA</td>
-                    <td className="border border-gray-300 px-2 py-2">CHUBBS</td> 
-                    <td className="border border-gray-300 px-2 py-2">1-2</td>
-                    <td className="border border-gray-300 px-2 py-2">$2.000.000</td>
-                    <td className="border border-gray-300 px-2 py-2">2024/02/13</td>
-                    <td className="border border-gray-300 px-2 py-2">2025/07/12</td>
-                    <td className="border border-gray-300 px-2 py-2">Automática (Prórroga)</td>
-                    <td className="border border-gray-300 px-2 py-2">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-yellow-700 font-semibold whitespace-nowrap">Próximo a vencer</span>
-                        <div className="relative mr-auto">
-                          <span title="Alerta" className="ml-1">🔔</span>
-                          <span className="absolute -top-2 -right-4 text-xs px-2 py-0.5"></span>
-                        </div>
-                      </span>
-                    </td>
-                    <td className="border border-gray-300 px-2 py-2 flex gap-1">
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1">Registrar movimiento</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
-                    </td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">900341089</td>
-                    <td className="border border-gray-300 px-2 py-2">Comercial Nutresa S.A.</td>
-                    <td className="border border-gray-300 px-2 py-2">Carta de extensión de cobertura RC</td>
-                    <td className="border border-gray-300 px-2 py-2">DAVISA</td>
-                    <td className="border border-gray-300 px-2 py-2">CHUBBS</td> 
-                    <td className="border border-gray-300 px-2 py-2">1-1</td>
-                    <td className="border border-gray-300 px-2 py-2">$1.000.000</td>
-                    <td className="border border-gray-300 px-2 py-2">2024/02/13</td>
-                    <td className="border border-gray-300 px-2 py-2">2025/07/12</td>
-                    <td className="border border-gray-300 px-2 py-2">Otrosi o nuevo contrato (Renovación)</td>
-                    <td className="border border-gray-300 px-2 py-2">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-red-700 font-semibold whitespace-nowrap">Vencido</span>
-                      </span>
-                    </td>
-                    <td className="border border-gray-300 px-2 py-2 flex gap-1">
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
-                    </td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">860050906</td>
-                    <td className="border border-gray-300 px-2 py-2">Adecco Colombia S.A.</td>
-                    <td className="border border-gray-300 px-2 py-2">Seguro de cumplimiento</td>
-                    <td className="border border-gray-300 px-2 py-2">DAVISA</td>
-                    <td className="border border-gray-300 px-2 py-2">SURA</td> 
-                    <td className="border border-gray-300 px-2 py-2">1-1</td>
-                    <td className="border border-gray-300 px-2 py-2">$1.300.000</td>
-                    <td className="border border-gray-300 px-2 py-2">2024/02/13</td>
-                    <td className="border border-gray-300 px-2 py-2">2025/07/12</td>
-                    <td className="border border-gray-300 px-2 py-2">Automatica (Prórroga)</td>
-                    <td className="border border-gray-300 px-2 py-2">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-green-700 font-semibold whitespace-nowrap">Vigente</span>
-                      </span>
-                    </td>
-                    <td className="border border-gray-300 px-2 py-2 flex gap-1">
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
-                    </td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer"></td>
-                    <td className="border border-gray-300 px-2 py-2">Adecco Colombia S.A.</td>
-                    <td className="border border-gray-300 px-2 py-2">Seguro de responsabilidad civil</td>
-                    <td className="border border-gray-300 px-2 py-2">DAVISA</td>
-                    <td className="border border-gray-300 px-2 py-2">SURA</td> 
-                    <td className="border border-gray-300 px-2 py-2">2-1</td>
-                    <td className="border border-gray-300 px-2 py-2">$1.000.000</td>
-                    <td className="border border-gray-300 px-2 py-2">2024/02/13</td>
-                    <td className="border border-gray-300 px-2 py-2">2025/07/12</td>
-                    <td className="border border-gray-300 px-2 py-2">Otrosi o nuevo contrato (Renovación)</td>
-                    <td className="border border-gray-300 px-2 py-2">
-                      <span className="inline-flex items-center gap-1">
-                        <span className="text-green-700 font-semibold whitespace-nowrap">Vigente</span>
-                      </span>
-                    </td>
-                    <td className="border border-gray-300 px-2 py-2 flex gap-1">
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
-                      <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
-                      <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
-                    </td>
-                  </tr>
+                  {listPolicies.map(policy => (
+                    <tr className="bg-white">
+                      <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">800226175</td>
+                      <td className="border border-gray-300 px-2 py-2">COLMENA SEGUROS S.A.</td>
+                      <td className="border border-gray-300 px-2 py-2">Seguro de complimiento</td>
+                      <td className="border border-gray-300 px-2 py-2">DAVISA</td>
+                      <td className="border border-gray-300 px-2 py-2">SURA</td> 
+                      <td className="border border-gray-300 px-2 py-2">1-1</td>
+                      <td className="border border-gray-300 px-2 py-2">$2.000.000</td>
+                      <td className="border border-gray-300 px-2 py-2">2024/02/13</td>
+                      <td className="border border-gray-300 px-2 py-2">2025/07/12</td>
+                      <td className="border border-gray-300 px-2 py-2">Automática (Prórroga)</td>
+                      <td className="border border-gray-300 px-2 py-2">
+                        <span className="inline-flex items-center gap-1">
+                          <span className="text-yellow-700 font-semibold whitespace-nowrap">Próximo a vencer</span>
+                          <div className="relative mr-auto">
+                            <span title="Alerta" className="ml-1">🔔</span>
+                            <span className="absolute -top-2 -right-4 text-xs px-2 py-0.5"></span>
+                          </div>
+                        </span>
+                      </td>
+                      <td className="border border-gray-300 px-2 py-2 flex gap-1">
+                        <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">👁️‍🗨️ Detalle</button>
+                        <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">🕒 Histórico</button>
+                        <button className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-1">📄 Contrato</button>
+                        <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs mr-1" onClick={() => router.push('/legal/recordMovement')}>Registrar movimiento</button>
+                        <button className="bg-blue-600 text-white px-2 py-1 rounded text-xs">Registrar contrato</button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
             )}
-
 
             {buttonActive === 'Documentos jurídicos' && (
               <>

@@ -98,27 +98,27 @@ export const clientsService = {
         return response.data;
     },
     getClientContract: async (id) => {
-        const response = await api.get(`/clients/client/${id}/contract`);
+        const response = await api.get(`/clients/contract`);
         return response.data;
     },
     createClientContract: async (id, contract) => {
-        const response = await api.post(`/clients/client/${id}/contract`, contract);
+        const response = await api.post(`/clients/contract`, contract);
         return response.data;
     },
     updateClientContract: async (id, contract) => {
-        const response = await api.put(`/clients/client/${id}/contract/${id}`, contract);
+        const response = await api.put(`/clients/contract/${id}`, contract);
         return response.data;
     },
     getClientContractById: async (id) => {
-        const response = await api.get(`/clients/client/${id}/contract/${id}`);
+        const response = await api.get(`/clients/contract/${id}`);
         return response.data;
     },
     patchClientContract: async (id, contract) => {
-        const response = await api.patch(`/clients/client/${id}/contract/${id}`, contract);
+        const response = await api.patch(`/clients/contract/${id}`, contract);
         return response.data;
     },
     deleteClientContract: async (id) => {
-        const response = await api.delete(`/clients/client/${id}/contract/${id}`);
+        const response = await api.delete(`/clients/contract/${id}`);
         return response.data;
     },
     getClientContractHistory: async (id) => {
@@ -175,6 +175,34 @@ export const clientsService = {
     },
     deleteClientContractSpecificPenalty: async (id) => {
         const response = await api.delete(`/clients/contract/${id}/specific-penalty/${id}`);
+        return response.data;
+    },
+    getClientPolicy: async () => {
+        const response = await api.get(`/clients/policy`);
+        return response.data;
+    },
+    createClientPolicy: async (policy) => {
+        const response = await api.post(`/clients/policy`, policy);
+        return response.data;
+    },
+    getClientPolicyById: async (id) => {
+        const response = await api.get(`/clients/policy/${id}`);
+        return response.data;
+    },
+    patchClientPolicy: async (id, policy) => {
+        const response = await api.patch(`/clients/policy/${id}`, policy);
+        return response.data;
+    },
+    updateClientPolicy: async (id, policy) => {
+        const response = await api.put(`/clients/policy/${id}`, policy);
+        return response.data;
+    },
+    getClientPolicyHistory: async () => {
+        const response = await api.get(`/clients/policy-history`);
+        return response.data;
+    },
+    getClientPolicyHistoryById: async (id) => {
+        const response = await api.get(`/clients/policy-history/${id}`);
         return response.data;
     }
 }
