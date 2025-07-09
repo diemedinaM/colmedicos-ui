@@ -6,7 +6,7 @@ export const authService = {
     return response.data;
   },
   refresh: async (refreshToken) => {
-    const response = await api.post('/auth/jwt/refresh', { refresh: refreshToken });
+    const response = await api.post('/auth/jwt/refresh/', { refresh: refreshToken });
     localStorage.setItem('authToken', response.data.access);
     localStorage.setItem('refreshToken', response.data.refresh);
     return response.data;

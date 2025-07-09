@@ -8,8 +8,8 @@ const menuItems = [
   {
     label: "1. Clientes",
     submenu: [{
-      label: "Creación - Credito",
-      href: "/clients/createCredit"
+      label: "Credito",
+      href: "/clients"
     },
     {
       label: "Panel de Gestión Documental",

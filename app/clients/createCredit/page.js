@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { commonService } from "@/services/commonService";
 import { filesService } from "@/services/filesService";
+import { clientsService } from "@/services/clientsService";
+import { useSearchParams } from "next/navigation";
 
 export default function CreateCredit() {
   const [model, setModel] = useState({
@@ -53,7 +55,8 @@ export default function CreateCredit() {
     arl: 0,
     insurance_provider: 0
   });
-  
+  const searchParams = useSearchParams();
+
   // Estado para validación
   const [showValidation, setShowValidation] = useState(false);
 
@@ -81,7 +84,7 @@ export default function CreateCredit() {
   };
 
   // Función para manejar el guardado
-  const handleSave = () => {
+  const handleSave = async () => {
     setShowValidation(true);
     
     // Verificar si hay campos vacíos
@@ -95,6 +98,12 @@ export default function CreateCredit() {
     // Si todos los campos están llenos, proceder con el guardado
     console.log("Formulario válido, guardando:", model);
     // Aquí iría la lógica para guardar
+    const _model = {...model};
+    delete _model.company_group;
+    delete _model.legal_information;
+    delete _model.agreement_information;
+ 
+    await clientsService.createClient(_model);
   };
 
   // Función para manejar "Guardar y seguir editando"
@@ -151,66 +160,110 @@ export default function CreateCredit() {
   const getDocumentType = async () => {
     const response = await commonService.getDocumentType();
     setListDocumentType(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, document_type: response.results[0].id}));
+    }
   };
 
   const getTaxLiability = async () => {
     const response = await commonService.getTaxLiability();
     setListTaxLiability(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, tax_liability: response.results[0].id}));
+    }
   };
 
   const getBusinessStructure = async () => {
     const response = await commonService.getBusinessStructure();
     setListBusinessStructure(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, business_structure: response.results[0].id}));
+    }
   };
 
   const getTaxPayerType = async () => {
     const response = await commonService.getTaxpayerType();
     setListTaxPayerType(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, taxpayer_type: response.results[0].id}));
+    }
   };
 
   const getCompanyType = async () => {
     const response = await commonService.getCompanyType();
     setListCompanyType(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, company_type: response.results[0].id}));
+    }
   };
 
   const getEconomicActivity = async () => {
     const response = await commonService.getEconomicActivity();
     setListEconomicActivity(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, economic_activity: response.results[0].id}));
+    }
   };
 
   const getSector = async () => {
     const response = await commonService.getSector();
     setListSector(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, sector: response.results[0].id}));
+    }
   };
 
   const getCountry = async () => {
     const response = await commonService.getCountry();
     setListCountry(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, country: response.results[0].id}));
+    }
   };
 
   const getProvince = async () => {
     const response = await commonService.getProvince();
     setListProvince(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, province: response.results[0].id}));
+    }
   };
 
   const getCity = async () => {
     const response = await commonService.getCity();
     setListCity(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, city: response.results[0].id}));
+    }
   };
 
   const getARL = async () => {
     const response = await commonService.getArl ();
     setListARL(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, arl: response.results[0].id}));
+    }
   };
 
   const getInsuranceProvider = async () => {
     const response = await commonService.getInsuranceProvider();
     setListInsuranceProvider(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, insurance_provider: response.results[0].id}));
+    }
   };
 
   const getCompanyGroup = async () => {
     const response = await commonService.getCompanyGroup();
     setListCompanyGroup(response.results);
+    if (response.results.length > 0) {
+      setModel(prevModel => ({...prevModel, company_group: response.results[0].id}));
+    }
+  };
+
+  const getClientById = async (id) => {
+    const response = await clientsService.getClientById(id);
+    setModel(response);
   };
 
   const uploadDocument = async (e, field) => {
@@ -221,18 +274,18 @@ export default function CreateCredit() {
       }
       
       const response = await filesService.uploadFile(file);
-      const url = response.url || '';
+      const path = response.path || '';
       
       if (field === 'rut') {
-        setModel({...model, rut: url});
+        setModel(prevModel => ({...prevModel, rut: path}));
       } else if (field === 'chamber_of_commerce') {
-        setModel({...model, chamber_of_commerce: url});
+        setModel(prevModel => ({...prevModel, chamber_of_commerce: path}));
       } else if (field === 'document_number') {
-        setModel({...model, document_number: url});
+        setModel(prevModel => ({...prevModel, document_number: path}));
       } else if (field === 'commercial_agreement') {
-        setModel({...model, commercial_agreement: url});
+        setModel(prevModel => ({...prevModel, commercial_agreement: path}));
       } else if (field === 'legal_certificates') {
-        setModel({...model, legal_certificates: url});
+        setModel(prevModel => ({...prevModel, legal_certificates: path}));
       }
     } catch (error) {
       console.error('Error al subir archivo:', error);
@@ -253,6 +306,12 @@ export default function CreateCredit() {
     getARL();
     getInsuranceProvider();
     getCompanyGroup();
+
+    if (searchParams.get('id')) {
+      getClientById(searchParams.get('id'));
+      setTabActive('Información general');
+    }
+
   }, []);
 
 
@@ -296,10 +355,10 @@ export default function CreateCredit() {
               </div>
             </div>
 
-                          <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-4">
                <div>
                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de documento</label>
-                   <select className={getFieldClassName('document_type')} onChange={(e) => setModel({...model, document_type: e.target.value})}>
+                   <select className={getFieldClassName('document_type')} value={model.document_type} onChange={(e) => setModel({...model, document_type: e.target.value})}>
                      {listDocumentType.map(documentType => (
                        <option key={documentType.id} value={documentType.id}>{documentType.name}</option>
                      ))}
@@ -307,18 +366,18 @@ export default function CreateCredit() {
                </div>
                <div>
                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento</label>
-                   <input type="text" className={getFieldClassName('document_number')} onChange={(e) => setModel({...model, document_number: e.target.value})} placeholder="Ingrese el número de documento" />
+                   <input type="text" className={getFieldClassName('document_number')} value={model.document_number} onChange={(e) => setModel({...model, document_number: e.target.value})} placeholder="Ingrese el número de documento" />
                </div>
                <div>
                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Dígito de verificación</label>
-                   <input type="text" className={getFieldClassName('verification_digit')} onChange={(e) => setModel({...model, verification_digit: e.target.value})} placeholder="Ingrese el dígito de verificación" />
+                   <input type="text" className={getFieldClassName('verification_digit')} value={model.verification_digit} onChange={(e) => setModel({...model, verification_digit: e.target.value})} placeholder="Ingrese el dígito de verificación" />
                </div>
               </div>
 
                         <div className="grid grid-cols-3 gap-4">
              <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de Contribuyente</label>
-                 <select className={getFieldClassName('taxpayer_type')} onChange={(e) => setModel({...model, taxpayer_type: e.target.value})}>
+                 <select className={getFieldClassName('taxpayer_type')} value={model.taxpayer_type} onChange={(e) => setModel({...model, taxpayer_type: e.target.value})}>
                    {listTaxPayerType.map(taxPayerType => (
                      <option key={taxPayerType.id} value={taxPayerType.id}>{taxPayerType.text}</option>
                    ))}
@@ -326,7 +385,7 @@ export default function CreateCredit() {
              </div>
              <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de régimen</label>
-                 <select className={getFieldClassName('business_structure')} onChange={(e) => setModel({...model, business_structure: e.target.value})}>
+                 <select className={getFieldClassName('business_structure')} value={model.business_structure} onChange={(e) => setModel({...model, business_structure: e.target.value})}>
                    {listBusinessStructure.map(businessStructure => (
                      <option key={businessStructure.id} value={businessStructure.id}>{businessStructure.text}</option>
                    ))}
@@ -334,7 +393,7 @@ export default function CreateCredit() {
              </div>
              <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Responsabilidad fiscal</label>
-                 <select className={getFieldClassName('tax_liability')} onChange={(e) => setModel({...model, tax_liability: e.target.value})}>
+                 <select className={getFieldClassName('tax_liability')} value={model.tax_liability} onChange={(e) => setModel({...model, tax_liability: e.target.value})}>
                    {listTaxLiability.map(taxLiability => (
                      <option key={taxLiability.id} value={taxLiability.id}>{taxLiability.text}</option>
                    ))}
@@ -345,11 +404,11 @@ export default function CreateCredit() {
                         <div className="grid grid-cols-2 gap-4">
                  <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Razón social</label>
-                 <input type="text" className={getFieldClassName('name')} placeholder="Ingrese la razón social" onChange={(e) => setModel({...model, name: e.target.value})} />
+                 <input type="text" className={getFieldClassName('alias')} value={model.alias} placeholder="Ingrese la razón social" onChange={(e) => setModel({...model, alias: e.target.value})} />
                  </div>
                  <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de sociedad</label>
-                 <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, company_type: e.target.value})}>
+                 <select className="w-full px-3 py-2 border border-gray-300 rounded" value={model.company_type} onChange={(e) => setModel({...model, company_type: e.target.value})}>
                    {listCompanyType.map(companyType => (
                      <option key={companyType.id} value={companyType.id}>{companyType.text}</option>
                    ))}
@@ -360,22 +419,19 @@ export default function CreateCredit() {
                          <div className="grid grid-cols-1 gap-4">
                  <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1 required">Nombre comercial</label>
-                     <input type="text" className={getFieldClassName('alias')} onChange={(e) => setModel({...model, alias: e.target.value})} placeholder="Ingrese el nombre comercial" />
+                     <input type="text" className={getFieldClassName('alias')} value={model.name} onChange={(e) => setModel({...model, name: e.target.value})} placeholder="Ingrese el nombre comercial" />
                  </div>
                  <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1 required">Actividad económica</label>
-                     <div className="grid grid-cols-[1fr_4fr] gap-4">
-                     <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, economic_activity_name: e.target.value})} placeholder="Ingrese la actividad económica" />
-                     <select className={getFieldClassName('economic_activity')} onChange={(e) => setModel({...model, economic_activity: e.target.value})}>
+                     <select className={getFieldClassName('economic_activity')} value={model.economic_activity} onChange={(e) => setModel({...model, economic_activity: e.target.value})}>
                        {listEconomicActivity.map(economicActivity => (
                          <option key={economicActivity.id} value={economicActivity.id}>{economicActivity.text}</option>
                        ))}
                      </select>
-                     </div>
                  </div>
                  <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1 required">Sector económico</label>
-                     <select className={getFieldClassName('sector')} onChange={(e) => setModel({...model, sector: e.target.value})}>
+                     <select className={getFieldClassName('sector')} value={model.sector} onChange={(e) => setModel({...model, sector: e.target.value})}>
                        {listSector.map(sector => (
                          <option key={sector.id} value={sector.id}>{sector.text}</option>
                        ))}
@@ -386,7 +442,7 @@ export default function CreateCredit() {
                         <div className="grid grid-cols-3 gap-4">
              <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">País</label>
-                 <select className={getFieldClassName('country')} onChange={(e) => setModel({...model, country: e.target.value})}>
+                 <select className={getFieldClassName('country')} value={model.country} onChange={(e) => setModel({...model, country: e.target.value})}>
                    {listCountry.map(country => (
                      <option key={country.id} value={country.id}>{country.name}</option>
                    ))}
@@ -394,7 +450,7 @@ export default function CreateCredit() {
              </div>
              <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Región</label>
-                 <select className={getFieldClassName('province')} onChange={(e) => setModel({...model, province: e.target.value})}>
+                 <select className={getFieldClassName('province')} value={model.province} onChange={(e) => setModel({...model, province: e.target.value})}>
                    {listProvince.map(province => (
                      <option key={province.id} value={province.id}>{province.name}</option>
                    ))}
@@ -402,7 +458,7 @@ export default function CreateCredit() {
              </div>
              <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Municipio</label>
-                 <select className={getFieldClassName('city')} onChange={(e) => setModel({...model, city: e.target.value})}>
+                 <select className={getFieldClassName('city')} value={model.city} onChange={(e) => setModel({...model, city: e.target.value})}>
                    {listCity.map(city => (
                      <option key={city.id} value={city.id}>{city.name}</option>
                    ))}
@@ -413,73 +469,75 @@ export default function CreateCredit() {
                         <div className="grid grid-cols-2 gap-4">
              <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Dirección</label>
-                 <input type="text" className={getFieldClassName('address')} placeholder="Ingrese la dirección" onChange={(e) => setModel({...model, address: e.target.value})} />
+                 <input type="text" className={getFieldClassName('address')} placeholder="Ingrese la dirección" value={model.address} onChange={(e) => setModel({...model, address: e.target.value})} />
              </div>
              <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Codificación DIAN</label>
-                 <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, dian_code: e.target.value})} placeholder="Ingrese la codificación DIAN" />
+                 <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" value={model.converted_address} onChange={(e) => setModel({...model, converted_address: e.target.value})} placeholder="Ingrese la codificación DIAN" />
              </div>
              </div>
 
                         <div className="grid grid-cols-2 gap-4">
                  <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1 required">Correo electrónico reportado en el RUT</label>
-                     <input type="email" className={getFieldClassName('email')} onChange={(e) => setModel({...model, email: e.target.value})} placeholder="Ingrese el correo electrónico" />
+                     <input type="email" className={getFieldClassName('email')} value={model.email} onChange={(e) => setModel({...model, email: e.target.value})} placeholder="Ingrese el correo electrónico" />
                  </div>
              <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Teléfono reportado en el RUT</label>
-                 <input type="text" className={getFieldClassName('phone')} onChange={(e) => setModel({...model, phone: e.target.value})} placeholder="Ingrese el teléfono" />
+                 <input type="text" className={getFieldClassName('phone')} value={model.phone} onChange={(e) => setModel({...model, phone: e.target.value})} placeholder="Ingrese el teléfono" />
              </div>
              </div>
 
                         <div className="grid grid-cols-1">
              <div>
                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Número de empleados</label>
-                 <input type="number" className={getFieldClassName('employees')} onChange={(e) => setModel({...model, employees: e.target.value})} placeholder="Ingrese el número de empleados" />
+                 <input type="number" className={getFieldClassName('employees')} value={model.employees} onChange={(e) => setModel({...model, employees: e.target.value})} placeholder="Ingrese el número de empleados" />
              </div>
              </div>
 
-            <hr className="my-4" />
-
-            <strong className="font-bold mb-1">Representante legal</strong>
-            <div className="grid grid-cols-1">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento</label>
-                    <div className="flex items-center gap-2">
-                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el documento" value={model.document_number || ''} readOnly />
-                    <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'document_number')} id="fileDocumentNumber" />
-                    <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileDocumentNumber').click()}>Subir</button>
+            {model.id && (
+              <>
+                <hr className="my-4" />
+                <strong className="font-bold mb-1">Representante legal</strong>
+                <div className="grid grid-cols-1">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento</label>
+                        <div className="flex items-center gap-2">
+                        <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el documento" value={model.document_number || ''} readOnly />
+                        <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'document_number')} id="fileDocumentNumber" />
+                        <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileDocumentNumber').click()}>Subir</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de documento</label>
+                        <select className="w-full px-3 py-2 border border-gray-300 rounded" value={model.document_type} onChange={(e) => setModel({...model, document_type: e.target.value})}>
+                          {listDocumentType.map(documentType => (
+                            <option key={documentType.id} value={documentType.id}>{documentType.name}</option>
+                          ))}
+                        </select>
+                    </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de documento</label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, document_type: e.target.value})}>
-                      {listDocumentType.map(documentType => (
-                        <option key={documentType.id} value={documentType.id}>{documentType.name}</option>
-                      ))}
-                    </select>
+                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Numero de Identificación</label>
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" value={model.document_number} onChange={(e) => setModel({...model, document_number: e.target.value})} placeholder="Ingrese el número de identificación" />
                 </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Numero de Identificación</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, document_number: e.target.value})} placeholder="Ingrese el número de identificación" />
-            </div>
-            </div>
-            <div className="grid grid-cols-1">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Nombre Completo</label>
-                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el nombre completo" value={model.name || ''} onChange={(e) => setModel({...model, name: e.target.value})} />
                 </div>
-            </div>
-            <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-sm">+ Agregar representante legal</button>
-
+                <div className="grid grid-cols-1">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1 required">Nombre Completo</label>
+                        <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el nombre completo" value={model.name || ''} onChange={(e) => setModel({...model, name: e.target.value})} />
+                    </div>
+                </div>
+                <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-sm">+ Agregar representante legal</button>
+              </>
+            )}
             <hr className="my-4" />
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">ARL</label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, arl: e.target.value})}>
+                    <select className="w-full px-3 py-2 border border-gray-300 rounded" value={model.arl} onChange={(e) => setModel({...model, arl: e.target.value})}>
                         {listARL.map(arl => (
                           <option key={arl.id} value={arl.id}>{arl.name}</option>
                         ))}
@@ -487,7 +545,7 @@ export default function CreateCredit() {
                 </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Corredor de seguros</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, insurance_provider: e.target.value})}>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded" value={model.insurance_provider} onChange={(e) => setModel({...model, insurance_provider: e.target.value})}>
                     {listInsuranceProvider.map(insuranceProvider => (
                       <option key={insuranceProvider.id} value={insuranceProvider.id}>{insuranceProvider.name}</option>
                     ))}

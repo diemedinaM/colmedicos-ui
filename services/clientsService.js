@@ -6,7 +6,7 @@ export const clientsService = {
         return response.data;
     },
     createClient: async (client) => {
-        const response = await api.post('/clients/client', client);
+        const response = await api.post('/clients/client/', client);
         return response.data;
     },
     updateClient: async (id, client) => {
