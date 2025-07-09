@@ -6,7 +6,6 @@ import { filesService } from "@/services/filesService";
 
 export default function CreateCredit() {
   const [model, setModel] = useState({
-    company_group_active: "false",
     company_group: {
       company_groups: 0
     },
@@ -55,6 +54,66 @@ export default function CreateCredit() {
     insurance_provider: 0
   });
   
+  // Estado para validación
+  const [showValidation, setShowValidation] = useState(false);
+
+  // Lista de campos requeridos
+  const requiredFields = [
+    'rut', 'chamber_of_commerce', 'document_number', 'verification_digit',
+    'name', 'alias', 'email', 'phone', 'employees', 'address',
+    'document_type', 'taxpayer_type', 'business_structure', 'tax_liability',
+    'economic_activity', 'sector', 'country', 'province', 'city'
+  ];
+
+  // Función para validar si un campo está vacío
+  const isFieldEmpty = (fieldName) => {
+    const value = model[fieldName];
+    return !value || value === "" || value === 0;
+  };
+
+  // Función para obtener la clase CSS del campo
+  const getFieldClassName = (fieldName) => {
+    const baseClass = "w-full px-3 py-2 border rounded";
+    if (showValidation && isFieldEmpty(fieldName)) {
+      return `${baseClass} border-red-500 focus:border-red-500 focus:ring-red-500`;
+    }
+    return `${baseClass} border-gray-300 focus:border-blue-500 focus:ring-blue-500`;
+  };
+
+  // Función para manejar el guardado
+  const handleSave = () => {
+    setShowValidation(true);
+    
+    // Verificar si hay campos vacíos
+    const emptyFields = requiredFields.filter(field => isFieldEmpty(field));
+    
+    if (emptyFields.length > 0) {
+      console.log("Campos vacíos:", emptyFields);
+      return;
+    }
+    
+    // Si todos los campos están llenos, proceder con el guardado
+    console.log("Formulario válido, guardando:", model);
+    // Aquí iría la lógica para guardar
+  };
+
+  // Función para manejar "Guardar y seguir editando"
+  const handleSaveAndContinue = () => {
+    setShowValidation(true);
+    
+    // Verificar si hay campos vacíos
+    const emptyFields = requiredFields.filter(field => isFieldEmpty(field));
+    
+    if (emptyFields.length > 0) {
+      console.log("Campos vacíos:", emptyFields);
+      return;
+    }
+    
+    // Si todos los campos están llenos, proceder con el guardado
+    console.log("Formulario válido, guardando y continuando:", model);
+    // Aquí iría la lógica para guardar y continuar
+  };
+
   const listTabs = [
     'Información general',
     'Grupo empresarial',
@@ -87,6 +146,7 @@ export default function CreateCredit() {
   const [listARL, setListARL] = useState([]);
   const [listInsuranceProvider, setListInsuranceProvider] = useState([]);
   const [listCompanyGroup, setListCompanyGroup] = useState([]);
+  const [listTaxPayerType, setListTaxPayerType] = useState([]);
 
   const getDocumentType = async () => {
     const response = await commonService.getDocumentType();
@@ -101,6 +161,11 @@ export default function CreateCredit() {
   const getBusinessStructure = async () => {
     const response = await commonService.getBusinessStructure();
     setListBusinessStructure(response.results);
+  };
+
+  const getTaxPayerType = async () => {
+    const response = await commonService.getTaxpayerType();
+    setListTaxPayerType(response.results);
   };
 
   const getCompanyType = async () => {
@@ -149,12 +214,28 @@ export default function CreateCredit() {
   };
 
   const uploadDocument = async (e, field) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append('file', file);
-    const response = await filesService.uploadFile(formData);
-    if (field === 'rut') {
-      setModel({...model, rut: response.results.url});
+    try {
+      const file = e.target.files[0];
+      if (!file) {
+        return;
+      }
+      
+      const response = await filesService.uploadFile(file);
+      const url = response.url || '';
+      
+      if (field === 'rut') {
+        setModel({...model, rut: url});
+      } else if (field === 'chamber_of_commerce') {
+        setModel({...model, chamber_of_commerce: url});
+      } else if (field === 'document_number') {
+        setModel({...model, document_number: url});
+      } else if (field === 'commercial_agreement') {
+        setModel({...model, commercial_agreement: url});
+      } else if (field === 'legal_certificates') {
+        setModel({...model, legal_certificates: url});
+      }
+    } catch (error) {
+      console.error('Error al subir archivo:', error);
     }
   };
 
@@ -162,6 +243,7 @@ export default function CreateCredit() {
     getDocumentType();
     getTaxLiability();
     getBusinessStructure();
+    getTaxPayerType();
     getCompanyType();
     getEconomicActivity();
     getSector();
@@ -199,7 +281,7 @@ export default function CreateCredit() {
               <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1 required">RUT</label>
                   <div className="flex items-center gap-2">
-                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el RUT" value={model.rut} readOnly />
+                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el RUT" value={model.rut || ''} readOnly />
                     <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'rut')} id="fileRut" />
                     <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileRut').click()}>Subir</button>
                   </div>
@@ -207,153 +289,155 @@ export default function CreateCredit() {
               <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1 required">Cámara de comercio</label>
                   <div className="flex items-center gap-2">
-                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el número de cámara de comercio" value={model.chamber_of_commerce} readOnly />
+                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el número de cámara de comercio" value={model.chamber_of_commerce || ''} readOnly />
                     <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'chamber_of_commerce')} id="fileChamberOfCommerce" />
                     <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileChamberOfCommerce').click()}>Subir</button>
                   </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de documento</label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, document_type: e.target.value})}>
-                    {listDocumentType.map(documentType => (
-                      <option key={documentType.id} value={documentType.id}>{documentType.name}</option>
-                    ))}
-                  </select>
+                          <div className="grid grid-cols-3 gap-4">
+               <div>
+                   <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de documento</label>
+                   <select className={getFieldClassName('document_type')} onChange={(e) => setModel({...model, document_type: e.target.value})}>
+                     {listDocumentType.map(documentType => (
+                       <option key={documentType.id} value={documentType.id}>{documentType.name}</option>
+                     ))}
+                   </select>
+               </div>
+               <div>
+                   <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento</label>
+                   <input type="text" className={getFieldClassName('document_number')} onChange={(e) => setModel({...model, document_number: e.target.value})} placeholder="Ingrese el número de documento" />
+               </div>
+               <div>
+                   <label className="block text-sm font-medium text-gray-700 mb-1 required">Dígito de verificación</label>
+                   <input type="text" className={getFieldClassName('verification_digit')} onChange={(e) => setModel({...model, verification_digit: e.target.value})} placeholder="Ingrese el dígito de verificación" />
+               </div>
               </div>
-              <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, document_number: e.target.value})} placeholder="Ingrese el número de documento" />
-              </div>
-              <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1 required">Dígito de verificación</label>
-                  <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, verification_digit: e.target.value})} placeholder="Ingrese el dígito de verificación" />
-              </div>
-            </div>
 
-            <div className="grid grid-cols-3 gap-4">
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de Contribuyente</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, taxpayer_type: e.target.value})}>
-                <option>-</option>
-                </select>
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de régimen</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, business_structure: e.target.value})}>
-                  {listBusinessStructure.map(businessStructure => (
-                    <option key={businessStructure.id} value={businessStructure.id}>{businessStructure.text}</option>
-                  ))}
-                </select>
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Responsabilidad fiscal</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, tax_liability: e.target.value})}>
-                  {listTaxLiability.map(taxLiability => (
-                    <option key={taxLiability.id} value={taxLiability.id}>{taxLiability.text}</option>
-                  ))}
-                </select>
-            </div>
-            </div>
+                        <div className="grid grid-cols-3 gap-4">
+             <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de Contribuyente</label>
+                 <select className={getFieldClassName('taxpayer_type')} onChange={(e) => setModel({...model, taxpayer_type: e.target.value})}>
+                   {listTaxPayerType.map(taxPayerType => (
+                     <option key={taxPayerType.id} value={taxPayerType.id}>{taxPayerType.text}</option>
+                   ))}
+                 </select>
+             </div>
+             <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de régimen</label>
+                 <select className={getFieldClassName('business_structure')} onChange={(e) => setModel({...model, business_structure: e.target.value})}>
+                   {listBusinessStructure.map(businessStructure => (
+                     <option key={businessStructure.id} value={businessStructure.id}>{businessStructure.text}</option>
+                   ))}
+                 </select>
+             </div>
+             <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Responsabilidad fiscal</label>
+                 <select className={getFieldClassName('tax_liability')} onChange={(e) => setModel({...model, tax_liability: e.target.value})}>
+                   {listTaxLiability.map(taxLiability => (
+                     <option key={taxLiability.id} value={taxLiability.id}>{taxLiability.text}</option>
+                   ))}
+                 </select>
+             </div>
+             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-                <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Razón social</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese la razón social" onChange={(e) => setModel({...model, name: e.target.value})} />
-                </div>
-                <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de sociedad</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, company_type: e.target.value})}>
-                  {listCompanyType.map(companyType => (
-                    <option key={companyType.id} value={companyType.id}>{companyType.text}</option>
-                  ))}
-                </select>
-                </div>
-            </div>
+                        <div className="grid grid-cols-2 gap-4">
+                 <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Razón social</label>
+                 <input type="text" className={getFieldClassName('name')} placeholder="Ingrese la razón social" onChange={(e) => setModel({...model, name: e.target.value})} />
+                 </div>
+                 <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Tipo de sociedad</label>
+                 <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, company_type: e.target.value})}>
+                   {listCompanyType.map(companyType => (
+                     <option key={companyType.id} value={companyType.id}>{companyType.text}</option>
+                   ))}
+                 </select>
+                 </div>
+             </div>
             
-            <div className="grid grid-cols-1 gap-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Nombre comercial</label>
-                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, alias: e.target.value})} placeholder="Ingrese el nombre comercial" />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Actividad económica</label>
-                    <div className="grid grid-cols-[1fr_4fr] gap-4">
-                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, economic_activity_name: e.target.value})} placeholder="Ingrese la actividad económica" />
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, economic_activity: e.target.value})}>
-                      {listEconomicActivity.map(economicActivity => (
-                        <option key={economicActivity.id} value={economicActivity.id}>{economicActivity.text}</option>
-                      ))}
-                    </select>
-                    </div>
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Sector económico</label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, sector: e.target.value})}>
-                      {listSector.map(sector => (
-                        <option key={sector.id} value={sector.id}>{sector.text}</option>
-                      ))}
-                    </select>
-                </div>
-            </div>
+                         <div className="grid grid-cols-1 gap-4">
+                 <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Nombre comercial</label>
+                     <input type="text" className={getFieldClassName('alias')} onChange={(e) => setModel({...model, alias: e.target.value})} placeholder="Ingrese el nombre comercial" />
+                 </div>
+                 <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Actividad económica</label>
+                     <div className="grid grid-cols-[1fr_4fr] gap-4">
+                     <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, economic_activity_name: e.target.value})} placeholder="Ingrese la actividad económica" />
+                     <select className={getFieldClassName('economic_activity')} onChange={(e) => setModel({...model, economic_activity: e.target.value})}>
+                       {listEconomicActivity.map(economicActivity => (
+                         <option key={economicActivity.id} value={economicActivity.id}>{economicActivity.text}</option>
+                       ))}
+                     </select>
+                     </div>
+                 </div>
+                 <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Sector económico</label>
+                     <select className={getFieldClassName('sector')} onChange={(e) => setModel({...model, sector: e.target.value})}>
+                       {listSector.map(sector => (
+                         <option key={sector.id} value={sector.id}>{sector.text}</option>
+                       ))}
+                     </select>
+                 </div>
+             </div>
 
-            <div className="grid grid-cols-3 gap-4">
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">País</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, country: e.target.value})}>
-                  {listCountry.map(country => (
-                    <option key={country.id} value={country.id}>{country.name}</option>
-                  ))}
-                </select>
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Región</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, province: e.target.value})}>
-                  {listProvince.map(province => (
-                    <option key={province.id} value={province.id}>{province.name}</option>
-                  ))}
-                </select>
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Municipio</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, city: e.target.value})}>
-                  {listCity.map(city => (
-                    <option key={city.id} value={city.id}>{city.name}</option>
-                  ))}
-                </select>
-            </div>
-            </div>
+                        <div className="grid grid-cols-3 gap-4">
+             <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">País</label>
+                 <select className={getFieldClassName('country')} onChange={(e) => setModel({...model, country: e.target.value})}>
+                   {listCountry.map(country => (
+                     <option key={country.id} value={country.id}>{country.name}</option>
+                   ))}
+                 </select>
+             </div>
+             <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Región</label>
+                 <select className={getFieldClassName('province')} onChange={(e) => setModel({...model, province: e.target.value})}>
+                   {listProvince.map(province => (
+                     <option key={province.id} value={province.id}>{province.name}</option>
+                   ))}
+                 </select>
+             </div>
+             <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Municipio</label>
+                 <select className={getFieldClassName('city')} onChange={(e) => setModel({...model, city: e.target.value})}>
+                   {listCity.map(city => (
+                     <option key={city.id} value={city.id}>{city.name}</option>
+                   ))}
+                 </select>
+             </div>
+             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Dirección</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese la dirección" onChange={(e) => setModel({...model, address: e.target.value})} />
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Codificación DIAN</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, dian_code: e.target.value})} placeholder="Ingrese la codificación DIAN" />
-            </div>
-            </div>
+                        <div className="grid grid-cols-2 gap-4">
+             <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Dirección</label>
+                 <input type="text" className={getFieldClassName('address')} placeholder="Ingrese la dirección" onChange={(e) => setModel({...model, address: e.target.value})} />
+             </div>
+             <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Codificación DIAN</label>
+                 <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, dian_code: e.target.value})} placeholder="Ingrese la codificación DIAN" />
+             </div>
+             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1 required">Correo electrónico reportado en el RUT</label>
-                    <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, email: e.target.value})} placeholder="Ingrese el correo electrónico" />
-                </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Teléfono reportado en el RUT</label>
-                <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, phone: e.target.value})} placeholder="Ingrese el teléfono" />
-            </div>
-            </div>
+                        <div className="grid grid-cols-2 gap-4">
+                 <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Correo electrónico reportado en el RUT</label>
+                     <input type="email" className={getFieldClassName('email')} onChange={(e) => setModel({...model, email: e.target.value})} placeholder="Ingrese el correo electrónico" />
+                 </div>
+             <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Teléfono reportado en el RUT</label>
+                 <input type="text" className={getFieldClassName('phone')} onChange={(e) => setModel({...model, phone: e.target.value})} placeholder="Ingrese el teléfono" />
+             </div>
+             </div>
 
-            <div className="grid grid-cols-1">
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 required">Número de empleados</label>
-                <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, employees: e.target.value})} placeholder="Ingrese el número de empleados" />
-            </div>
-            </div>
+                        <div className="grid grid-cols-1">
+             <div>
+                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Número de empleados</label>
+                 <input type="number" className={getFieldClassName('employees')} onChange={(e) => setModel({...model, employees: e.target.value})} placeholder="Ingrese el número de empleados" />
+             </div>
+             </div>
 
             <hr className="my-4" />
 
@@ -362,7 +446,7 @@ export default function CreateCredit() {
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento</label>
                     <div className="flex items-center gap-2">
-                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el documento" value={model.document_number} readOnly />
+                    <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el documento" value={model.document_number || ''} readOnly />
                     <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'document_number')} id="fileDocumentNumber" />
                     <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileDocumentNumber').click()}>Subir</button>
                     </div>
@@ -385,7 +469,7 @@ export default function CreateCredit() {
             <div className="grid grid-cols-1">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 required">Nombre Completo</label>
-                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el nombre completo" value={model.name} onChange={(e) => setModel({...model, name: e.target.value})} />
+                    <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Ingrese el nombre completo" value={model.name || ''} onChange={(e) => setModel({...model, name: e.target.value})} />
                 </div>
             </div>
             <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-sm">+ Agregar representante legal</button>
@@ -544,7 +628,7 @@ export default function CreateCredit() {
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Documento que regula la relación comercial</label>
                 <div className="flex items-center gap-2">
-                  <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el documento" value={model.commercial_agreement} readOnly />
+                  <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el documento" value={model.commercial_agreement || ''} readOnly />
                   <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'commercial_agreement')} id="fileCommercialAgreement" />
                   <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileCommercialAgreement').click()}>Subir</button>
                 </div>
@@ -552,7 +636,7 @@ export default function CreateCredit() {
             <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 required">Certificados legales vigentes y/o anexos</label>                
                 <div className="flex items-center gap-2">
-                  <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el certificado" value={model.legal_certificates} readOnly />
+                  <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Sube el certificado" value={model.legal_certificates || ''} readOnly />
                   <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'legal_certificates')} id="fileLegalCertificates" />
                   <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileLegalCertificates').click()}>Subir</button>
                 </div>
@@ -1274,16 +1358,12 @@ export default function CreateCredit() {
         </form>
       )}
 
-      <div className="flex flex-col gap-4 justify-end mt-8">
-        <div className="flex gap-2 justify-end">
-          <button type="button" className="px-6 py-2 bg-blue-300 text-white rounded border border-gray-300 text-sm">Anterior</button>
-          <button type="button" className="px-6 py-2 bg-blue-600 text-white rounded border border-gray-300 text-sm">Siguiente</button>
+        <div className="flex flex-col gap-4 justify-end mt-8">
+          <div className="flex gap-2 justify-end">
+            <button type="button" className="px-6 py-2 bg-blue-600 text-white rounded border border-gray-300 text-sm" onClick={handleSave}>Guardar</button>
+            <button type="button" className="px-6 py-2 bg-blue-400 text-white rounded border border-gray-300 text-sm" onClick={handleSaveAndContinue}>Guardar y seguir editando</button>
+          </div>
         </div>
-        <div className="flex gap-2 justify-end">
-          <button type="button" className="px-6 py-2 bg-blue-600 text-white rounded border border-gray-300 text-sm">Guardar</button>
-          <button type="button" className="px-6 py-2 bg-blue-400 text-white rounded border border-gray-300 text-sm">Guardar y seguir editando</button>
-        </div>
-      </div>
     </section>
   );
 }

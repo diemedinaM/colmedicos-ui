@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { authService } from './authService';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -11,11 +12,20 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
-      let token = localStorage.getItem('authToken') || location.search.split('token=')[1];
+      const search = location.search;
+      const params = new URLSearchParams(search);
+      let token = params.get('token');
       if (token) {
+        localStorage.setItem('authToken', token);
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
+    
+    // No sobrescribir Content-Type si es FormData
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
+    
     return config;
   },
   (error) => {
@@ -28,10 +38,13 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 403) {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('authToken');
-        window.location.href = '/login';
+        const params = new URLSearchParams(location.search);
+        const refreshToken = params.get('refresh');
+        if (refreshToken) {
+          authService.refresh(refreshToken);
+        }
       }
     }
     

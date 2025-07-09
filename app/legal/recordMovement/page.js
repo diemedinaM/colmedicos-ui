@@ -2,15 +2,26 @@
 import { useState, useEffect } from "react";
 import { clientsService } from "@/services/clientsService";
 import { commonService } from "@/services/commonService";
+import { employeesService } from "@/services/employeesService";
+import MultiSelect from "@/components/Multiselect";
 
 export default function RecordMovement() {
   const [stepActive, setStepActive] = useState(1);
-  const [buttonActive, setButtonActive] = useState('General');
   const [buttonActivePenalty, setButtonActivePenalty] = useState('General');
   const [listContracts, setListContracts] = useState([]);
   const [listPenalties, setListPenalties] = useState([]);
   const [listPolicyTypes, setListPolicyTypes] = useState([]);
   const [listInsuranceProviders, setListInsuranceProviders] = useState([]);
+  const [listInsuranceBroker, setListInsuranceBroker] = useState([]);
+  const [listEmployees, setListEmployees] = useState([]);
+
+  // Estados para multiselect de usuarios
+  const [selectedUsers1, setSelectedUsers1] = useState([]); // Para el primer campo de usuarios
+  const [selectedUsers2, setSelectedUsers2] = useState([]); // Para el segundo campo de usuarios
+  const [selectedUsers3, setSelectedUsers3] = useState([]); // Para el tercer campo de usuarios
+  const [selectedUsers4, setSelectedUsers4] = useState([]); // Para el cuarto campo de usuarios
+  const [selectedUsers5, setSelectedUsers5] = useState([]); // Para el quinto campo de usuarios
+  const [selectedUsers6, setSelectedUsers6] = useState([]); // Para el sexto campo de usuarios
 
   const getContracts = async () => {
     const response = await clientsService.getClientContract();
@@ -31,12 +42,24 @@ export default function RecordMovement() {
     const response = await commonService.getInsuranceProvider();
     setListInsuranceProviders(response.results);
   };
+
+  const getInsuranceBroker = async () => {
+    const response = await commonService.getInsuranceBroker();
+    setListInsuranceBroker(response.results);
+  };
+
+  const getEmployees = async () => {
+    const response = await employeesService.getEmployees();
+    setListEmployees(response.results);
+  };
   
   useEffect(() => {
     getContracts();
     getPenalties();
     getPolicyTypes();
     getInsuranceProviders();
+    getInsuranceBroker();
+    getEmployees();
   }, []);
   
   return (
@@ -155,10 +178,12 @@ export default function RecordMovement() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Usuario(s) a alertar</label>
-              <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Todos</option>
-                <option>Seleccionar</option>
-              </select>
+              <MultiSelect
+                options={listEmployees}
+                selectedValues={selectedUsers1}
+                onSelectionChange={setSelectedUsers1}
+                placeholder="Seleccione usuarios a alertar..."
+              />
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Mensaje de notificación</label>
@@ -223,10 +248,12 @@ export default function RecordMovement() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Usuario(s) a alertar</label>
-              <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Todos</option>
-                <option>Seleccionar</option>
-              </select>
+              <MultiSelect
+                options={listEmployees}
+                selectedValues={selectedUsers2}
+                onSelectionChange={setSelectedUsers2}
+                placeholder="Seleccione usuarios a alertar..."
+              />
             </div>
           <div className="mb-2 font-semibold text-gray-700">Seguimiento del valor del contrato</div>
             <div className="flex items-center gap-2">
@@ -259,10 +286,12 @@ export default function RecordMovement() {
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-gray-700 required">Usuario(s) a alertar</label>
-                  <select className="px-3 py-2 border border-gray-300 rounded">
-                    <option>Todos</option>
-                    <option>Seleccionar</option>
-                  </select>
+                  <MultiSelect
+                    options={listEmployees}
+                    selectedValues={selectedUsers3}
+                    onSelectionChange={setSelectedUsers3}
+                    placeholder="Seleccione usuarios a alertar..."
+                  />
                 </div>
 
                 <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm mt-6">Agregar plantilla</button>
@@ -358,7 +387,9 @@ export default function RecordMovement() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Corredora de seguros</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                
+                {listInsuranceBroker.map(insuranceBroker => (
+                  <option key={insuranceBroker.id} value={insuranceBroker.id}>{insuranceBroker.name}</option>
+                ))}
               </select>
             </div>
             <div className="flex flex-col gap-2">
@@ -432,10 +463,12 @@ export default function RecordMovement() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Usuario(s) a alertar</label>
-              <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Todos</option>
-                <option>Seleccionar</option>
-              </select>
+              <MultiSelect
+                options={listEmployees}
+                selectedValues={selectedUsers4}
+                onSelectionChange={setSelectedUsers4}
+                placeholder="Seleccione usuarios a alertar..."
+              />
             </div>
             <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm mt-6">Agregar otra póliza</button>
           </form>
@@ -475,10 +508,12 @@ export default function RecordMovement() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Usuario(s) a alertar</label>
-              <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Todos</option>
-                <option>Seleccionar</option>
-              </select>
+              <MultiSelect
+                options={listEmployees}
+                selectedValues={selectedUsers5}
+                onSelectionChange={setSelectedUsers5}
+                placeholder="Seleccione usuarios a alertar..."
+              />
             </div>
             <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm mt-6">Agregar plantilla</button>
 
@@ -487,10 +522,12 @@ export default function RecordMovement() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Seleccione usuario(s)</label>
-              <select className="px-3 py-2 border border-gray-300 rounded">
-                <option>Todos</option>
-                <option>Seleccionar</option>
-              </select>
+              <MultiSelect
+                options={listEmployees}
+                selectedValues={selectedUsers6}
+                onSelectionChange={setSelectedUsers6}
+                placeholder="Seleccione usuarios..."
+              />
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700">Nombre plantilla</label>

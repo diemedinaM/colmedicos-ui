@@ -385,6 +385,30 @@ export const commonService = {
         const response = await api.put(`/common/insurance-provider/${id}`, insuranceProvider);
         return response.data;
     },
+    getInsuranceBroker: async () => {
+        const response = await api.get('/common/insurance-broker');
+        return response.data;
+    },
+    createInsuranceBroker: async (insuranceBroker) => {
+        const response = await api.post('/common/insurance-broker', insuranceBroker);
+        return response.data;
+    },
+    updateInsuranceBroker: async (id, insuranceBroker) => {
+        const response = await api.patch(`/common/insurance-broker/${id}`, insuranceBroker);
+        return response.data;
+    },
+    getInsuranceBrokerById: async (id) => {
+        const response = await api.get(`/common/insurance-broker/${id}`);
+        return response.data;
+    },
+    deleteInsuranceBroker: async (id) => {
+        const response = await api.delete(`/common/insurance-broker/${id}`);
+        return response.data;
+    },
+    putInsuranceBroker: async (id, insuranceBroker) => {
+        const response = await api.put(`/common/insurance-broker/${id}`, insuranceBroker);
+        return response.data;
+    },
     getIps: async () => {
         const response = await api.get('/common/ips');
         return response.data;
