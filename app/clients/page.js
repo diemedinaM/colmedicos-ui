@@ -46,10 +46,8 @@ export default function ClientsPage() {
             ) : (
               clients.map((cliente) => (
                 <tr key={cliente.id} className="bg-white">
-                  <td className="border border-gray-300 px-2 py-2 text-blue-600 underline cursor-pointer">
-                    <Link href="/clients/createCredit" className="capitalize">
-                      {cliente.name}
-                    </Link>
+                  <td className="border border-gray-300 px-2 py-2 text-blue-600 underline cursor-pointer capitalize">
+                    {cliente.name}
                   </td>
                   <td className="border border-gray-300 px-2 py-2">{cliente.document_number}</td>
                   <td className="border border-gray-300 px-2 py-2">

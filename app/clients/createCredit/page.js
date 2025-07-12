@@ -55,6 +55,9 @@ export default function CreateCredit() {
     arl: 0,
     insurance_provider: 0
   });
+  const [listErrors, setListErrors] = useState([]);
+  const [showErrors, setShowErrors] = useState(false);
+
   const searchParams = useSearchParams();
 
   // Estado para validación
@@ -102,8 +105,12 @@ export default function CreateCredit() {
     delete _model.company_group;
     delete _model.legal_information;
     delete _model.agreement_information;
- 
-    await clientsService.createClient(_model);
+    const response = await clientsService.createClient(_model);
+    if (response.status == 400) {
+      setShowErrors(true);
+      setListErrors(response.response.data);
+      return;
+    }
   };
 
   // Función para manejar "Guardar y seguir editando"
@@ -559,21 +566,20 @@ export default function CreateCredit() {
         <form className="flex flex-col gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 required">La empresa pertenece a un grupo empresarial</label>
-            <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, company_group_active: e.target.value})}>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded">
               <option value="true">Si</option>
               <option value="false">No</option>
             </select>
           </div>
-          {model.company_group_active === 'true' && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1 required">Grupo empresarial</label>
-              <select className="w-full px-3 py-2 border border-gray-300 rounded" onChange={(e) => setModel({...model, company_group: e.target.value})}>
-                {listCompanyGroup.map(companyGroup => (
-                  <option key={companyGroup.id} value={companyGroup.id}>{companyGroup.text}</option>
-                ))}
-              </select>
-            </div>
-          )}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 required">Grupo empresarial</label>
+            <select className="w-full px-3 py-2 border border-gray-300 rounded">
+              <option>Selecciona un grupo empresarial</option>
+              {listCompanyGroup.map(companyGroup => (
+                <option key={companyGroup.id} value={companyGroup.id}>{companyGroup.text}</option>
+              ))}
+            </select>
+          </div>
         </form>
       )}
 
@@ -1415,6 +1421,20 @@ export default function CreateCredit() {
         </div>
         </form>
       )}
+
+        {showErrors && (
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2 bg-red-100 p-4 rounded-md">
+              {Object.keys(listErrors).map((fieldName, fieldIndex) => (
+                <div key={fieldIndex}>
+                  {listErrors[fieldName].map((error, errorIndex) => (
+                    <div key={errorIndex} className="text-red-500">{error}</div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-col gap-4 justify-end mt-8">
           <div className="flex gap-2 justify-end">

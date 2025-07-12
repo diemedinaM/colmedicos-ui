@@ -23,17 +23,17 @@ export default function Legal() {
     const [tabActive, setTabActive] = useState('Información jurídica');
     const [buttonActive, setButtonActive] = useState('Administración de contratos');
     const router = useRouter();
-    const [listContracts, setListContracts] = useState([]);
-    const [listPolicies, setListPolicies] = useState([]);
+    const [listContracts, setListContracts] = useState([{}, {}]);
+    const [listPolicies, setListPolicies] = useState([{}, {}]);
 
     const getContracts = async () => {
       const response = await clientsService.getClientContract();
-      setListContracts(response.results);
+      // setListContracts(response.results);
     };
 
     const getPolicies = async () => {
       const response = await clientsService.getClientPolicy();
-      setListPolicies(response.results);
+      // setListPolicies(response.results);
     };
 
     useEffect(() => {
@@ -78,8 +78,8 @@ export default function Legal() {
                   </tr>
                 </thead>
                 <tbody>
-                  {listContracts.map(contract => (
-                    <tr className="bg-white">
+                  {listContracts.map((contract, index) => (
+                    <tr className="bg-white" key={index}>
                       <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">807878878</td>
                       <td className="border border-gray-300 px-2 py-2">Cliente Nuevo S.A.S</td>
                       <td className="border border-gray-300 px-2 py-2">Público</td>
@@ -128,8 +128,8 @@ export default function Legal() {
                   </tr>
                 </thead>
                 <tbody>
-                  {listPolicies.map(policy => (
-                    <tr className="bg-white">
+                  {listPolicies.map((policy, index) => (
+                    <tr className="bg-white" key={index}>
                       <td className="border border-gray-300 px-2 py-2 text-blue-700 underline cursor-pointer">800226175</td>
                       <td className="border border-gray-300 px-2 py-2">COLMENA SEGUROS S.A.</td>
                       <td className="border border-gray-300 px-2 py-2">Seguro de complimiento</td>

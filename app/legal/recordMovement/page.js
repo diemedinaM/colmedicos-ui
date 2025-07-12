@@ -1,66 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
-import { clientsService } from "@/services/clientsService";
-import { commonService } from "@/services/commonService";
-import { employeesService } from "@/services/employeesService";
-import MultiSelect from "@/components/Multiselect";
+import { useState } from "react";
 
 export default function RecordMovement() {
   const [stepActive, setStepActive] = useState(1);
-  const [buttonActivePenalty, setButtonActivePenalty] = useState('General');
-  const [listContracts, setListContracts] = useState([]);
-  const [listPenalties, setListPenalties] = useState([]);
-  const [listPolicyTypes, setListPolicyTypes] = useState([]);
-  const [listInsuranceProviders, setListInsuranceProviders] = useState([]);
-  const [listInsuranceBroker, setListInsuranceBroker] = useState([]);
-  const [listEmployees, setListEmployees] = useState([]);
-
-  // Estados para multiselect de usuarios
-  const [selectedUsers1, setSelectedUsers1] = useState([]); // Para el primer campo de usuarios
-  const [selectedUsers2, setSelectedUsers2] = useState([]); // Para el segundo campo de usuarios
-  const [selectedUsers3, setSelectedUsers3] = useState([]); // Para el tercer campo de usuarios
-  const [selectedUsers4, setSelectedUsers4] = useState([]); // Para el cuarto campo de usuarios
-  const [selectedUsers5, setSelectedUsers5] = useState([]); // Para el quinto campo de usuarios
-  const [selectedUsers6, setSelectedUsers6] = useState([]); // Para el sexto campo de usuarios
-
-  const getContracts = async () => {
-    const response = await clientsService.getClientContract();
-    setListContracts(response.results);
-  };
-
-  const getPenalties = async () => {
-    const response = await commonService.getPenalty();
-    setListPenalties(response.results);
-  };
-
-  const getPolicyTypes = async () => {
-    const response = await commonService.getPolicyType();
-    setListPolicyTypes(response.results);
-  };
-
-  const getInsuranceProviders = async () => {
-    const response = await commonService.getInsuranceProvider();
-    setListInsuranceProviders(response.results);
-  };
-
-  const getInsuranceBroker = async () => {
-    const response = await commonService.getInsuranceBroker();
-    setListInsuranceBroker(response.results);
-  };
-
-  const getEmployees = async () => {
-    const response = await employeesService.getEmployees();
-    setListEmployees(response.results);
-  };
-  
-  useEffect(() => {
-    getContracts();
-    getPenalties();
-    getPolicyTypes();
-    getInsuranceProviders();
-    getInsuranceBroker();
-    getEmployees();
-  }, []);
+  const [buttonActive, setButtonActive] = useState('General');
   
   return (
     <section className="mx-auto p-8 bg-white rounded-lg shadow">
@@ -71,30 +14,37 @@ export default function RecordMovement() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Tipo de movimiento</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                <option value="CONTRACT_CREATION">Creación de contrato</option>
-                <option value="EXTENSION">Prorroga</option>
-                <option value="RENEWAL">Renovación</option>
-                <option value="CONTRACT_MODIFICATION">Modificación Contractual</option>
-                <option value="EARLY_TERMINATION">Terminación anticipada</option>
-                <option value="CONTRACT_SUSPENSION">Suspensión Contractual</option>
-                <option value="CONTRACT_REACTIVATION">Reactivación Contractual</option>
-                <option value="JUDICIAL_PROCESS">Proceso judicial en proceso</option>
+                <option value="Creación de contrato">Creación de contrato</option>
+                <option value="Prorroga">Prorroga</option>
+                <option value="Renovación">Renovación</option>
+                <option value="Modificación Contractual">Modificación Contractual</option>
+                <option value="Terminación anticipada">Terminación anticipada</option>
+                <option value="Suspensión Contractual">Suspensión Contractual</option>
+                <option value="Reactivación Contractual">Reactivación Contractual</option>
+                <option value="Proceso judicial en proceso">Proceso judicial en proceso</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Detalle</label>
               <textarea className="px-3 py-2 border border-gray-300 rounded" placeholder="Escribe el detalle del contrato" />
             </div>
+          </form>
+        </>
+      )}
+
+      { stepActive === 2 && (
+        <>
           <div className="mb-2 font-semibold text-gray-700">Información general Contrato</div>
+          <form className="grid grid-cols-1 gap-4">
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 underline">ID contrato: 1</label>
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Tipo de cliente</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                <option value="PRIVATE">Privado</option>
-                <option value="PUBLIC">Público</option>
-                <option value="MIXED">Mixto</option>
+                <option value="Privado">Privado</option>
+                <option value="Público">Público</option>
+                <option value="Mixto">Mixto</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
@@ -108,8 +58,7 @@ export default function RecordMovement() {
               <label className="text-sm font-medium text-gray-700 required">Documento que regula la relación comercial</label>
               <div className="flex gap-2 items-center">
                 <input type="text" className="px-3 py-2 border border-gray-300 rounded flex-1" placeholder="Seleccionar archivo..." readOnly />
-                <input type="file" className="hidden" onChange={(e) => uploadDocument(e, 'document_number')} id="fileDocumentNumber" />
-                <button type="button" className="px-4 py-2 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileDocumentNumber').click()}>Subir</button>
+                <button type="button" className="px-4 py-2 bg-gray-200 rounded border border-gray-300 text-xs">Subir</button>
               </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -178,12 +127,10 @@ export default function RecordMovement() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Usuario(s) a alertar</label>
-              <MultiSelect
-                options={listEmployees}
-                selectedValues={selectedUsers1}
-                onSelectionChange={setSelectedUsers1}
-                placeholder="Seleccione usuarios a alertar..."
-              />
+              <select className="px-3 py-2 border border-gray-300 rounded">
+                <option>Todos</option>
+                <option>Seleccionar</option>
+              </select>
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Mensaje de notificación</label>
@@ -226,7 +173,14 @@ export default function RecordMovement() {
                 <button type="button" className="px-6 py-2 bg-gray-200 rounded border border-gray-300 text-sm max-w-sm min-h-[480px] w-full">+ Agregar contacto jurídico</button>
               </section>
             </div>
+          </form>
+        </>
+      )}
+
+      { stepActive === 3 && (
+        <>
           <div className="mb-2 font-semibold text-gray-700">Seguimiento del valor del contrato</div>
+          <form className="grid grid-cols-1 gap-4">
             <div className="flex items-center gap-2">
               <label className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" className="sr-only peer" value="true" />
@@ -248,14 +202,19 @@ export default function RecordMovement() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Usuario(s) a alertar</label>
-              <MultiSelect
-                options={listEmployees}
-                selectedValues={selectedUsers2}
-                onSelectionChange={setSelectedUsers2}
-                placeholder="Seleccione usuarios a alertar..."
-              />
+              <select className="px-3 py-2 border border-gray-300 rounded">
+                <option>Todos</option>
+                <option>Seleccionar</option>
+              </select>
             </div>
+          </form>
+        </>
+      )}
+
+      { stepActive === 4 && (
+        <>
           <div className="mb-2 font-semibold text-gray-700">Seguimiento del valor del contrato</div>
+          <form className="grid grid-cols-1 gap-4">
             <div className="flex items-center gap-2">
               <label className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" className="sr-only peer" value="true" />
@@ -265,11 +224,11 @@ export default function RecordMovement() {
             </div>
 
             <div className="flex mb-4">
-              <button type="button" className={`px-6 py-2 text-sm ${buttonActivePenalty === 'General' ? 'bg-blue-600 text-white border-blue-600' : 'bg-gray-200 text-gray-700 border-gray-300'}`} onClick={() => setButtonActivePenalty('General')}>General</button>
-              <button type="button" className={`px-6 py-2 text-sm ${buttonActivePenalty === 'Específicas' ? 'bg-blue-600 text-white border-blue-600' : 'bg-gray-200 text-gray-700 border-gray-300'}`} onClick={() => setButtonActivePenalty('Específicas')}>Específicas</button>
+              <button type="button" className={`px-6 py-2 text-sm ${buttonActive === 'General' ? 'bg-blue-600 text-white border-blue-600' : 'bg-gray-200 text-gray-700 border-gray-300'}`} onClick={() => setButtonActive('General')}>General</button>
+              <button type="button" className={`px-6 py-2 text-sm ${buttonActive === 'Específicas' ? 'bg-blue-600 text-white border-blue-600' : 'bg-gray-200 text-gray-700 border-gray-300'}`} onClick={() => setButtonActive('Específicas')}>Específicas</button>
             </div>
 
-            { buttonActivePenalty === 'General' && (
+            { buttonActive === 'General' && (
               <>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-gray-700 required">Información de la penalización</label>
@@ -286,12 +245,10 @@ export default function RecordMovement() {
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-gray-700 required">Usuario(s) a alertar</label>
-                  <MultiSelect
-                    options={listEmployees}
-                    selectedValues={selectedUsers3}
-                    onSelectionChange={setSelectedUsers3}
-                    placeholder="Seleccione usuarios a alertar..."
-                  />
+                  <select className="px-3 py-2 border border-gray-300 rounded">
+                    <option>Todos</option>
+                    <option>Seleccionar</option>
+                  </select>
                 </div>
 
                 <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm mt-6">Agregar plantilla</button>
@@ -309,14 +266,12 @@ export default function RecordMovement() {
               </>
             )}
 
-            { buttonActivePenalty === 'Específicas' && (
+            { buttonActive === 'Específicas' && (
               <>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-gray-700 required">Tipo de penalización</label>
                   <select className="px-3 py-2 border border-gray-300 rounded">
-                    {listPenalties.map(penalty => (
-                      <option key={penalty.id} value={penalty.id}>{penalty.name}</option>
-                    ))}
+                    <option>Por incumplimiento</option>
                   </select>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -354,9 +309,8 @@ export default function RecordMovement() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Tipo de movimiento</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                {listPolicyTypes.map(policyType => (
-                  <option key={policyType.id} value={policyType.id}>{policyType.name}</option>
-                ))}
+                <option value="Creación de póliza">Creación de póliza</option>
+                <option value="Movimiento en póliza">Movimiento en póliza</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
@@ -387,17 +341,13 @@ export default function RecordMovement() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Corredora de seguros</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                {listInsuranceBroker.map(insuranceBroker => (
-                  <option key={insuranceBroker.id} value={insuranceBroker.id}>{insuranceBroker.name}</option>
-                ))}
+                <option>DAVISA</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Asegurador(a)</label>
               <select className="px-3 py-2 border border-gray-300 rounded">
-                {listInsuranceProviders.map(insuranceProvider => (
-                  <option key={insuranceProvider.id} value={insuranceProvider.id}>{insuranceProvider.name}</option>
-                ))}
+                <option>DAVISA</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
@@ -463,12 +413,10 @@ export default function RecordMovement() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Usuario(s) a alertar</label>
-              <MultiSelect
-                options={listEmployees}
-                selectedValues={selectedUsers4}
-                onSelectionChange={setSelectedUsers4}
-                placeholder="Seleccione usuarios a alertar..."
-              />
+              <select className="px-3 py-2 border border-gray-300 rounded">
+                <option>Todos</option>
+                <option>Seleccionar</option>
+              </select>
             </div>
             <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm mt-6">Agregar otra póliza</button>
           </form>
@@ -508,12 +456,10 @@ export default function RecordMovement() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Usuario(s) a alertar</label>
-              <MultiSelect
-                options={listEmployees}
-                selectedValues={selectedUsers5}
-                onSelectionChange={setSelectedUsers5}
-                placeholder="Seleccione usuarios a alertar..."
-              />
+              <select className="px-3 py-2 border border-gray-300 rounded">
+                <option>Todos</option>
+                <option>Seleccionar</option>
+              </select>
             </div>
             <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded text-sm mt-6">Agregar plantilla</button>
 
@@ -522,12 +468,10 @@ export default function RecordMovement() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700 required">Seleccione usuario(s)</label>
-              <MultiSelect
-                options={listEmployees}
-                selectedValues={selectedUsers6}
-                onSelectionChange={setSelectedUsers6}
-                placeholder="Seleccione usuarios..."
-              />
+              <select className="px-3 py-2 border border-gray-300 rounded">
+                <option>Todos</option>
+                <option>Seleccionar</option>
+              </select>
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700">Nombre plantilla</label>
@@ -537,15 +481,17 @@ export default function RecordMovement() {
         </>
       )}
 
-      { stepActive > 1 && stepActive < 8 && (
-        <button className="bg-blue-400 text-white px-4 py-2 rounded text-sm mt-6" onClick={() => setStepActive(stepActive - 1)}>Atrás</button>
-      )}
-      { stepActive < 8 && (
-        <button className="bg-blue-600 text-white px-4 py-2 rounded text-sm mt-6" onClick={() => setStepActive(stepActive + 1)}>Siguiente</button>
-      )}
-      { stepActive === 8 && (
-        <button className="bg-blue-600 text-white px-4 py-2 rounded text-sm mt-6">Guardar información</button>
-      )}
+      <div className="flex justify-end">
+        { stepActive > 1 && stepActive < 8 && (
+          <button className="bg-blue-400 text-white px-4 py-2 rounded text-sm mt-6 mr-2" onClick={() => setStepActive(stepActive - 1)}>Atrás</button>
+        )}
+        { stepActive < 8 && (
+          <button className="bg-blue-600 text-white px-4 py-2 rounded text-sm mt-6" onClick={() => setStepActive(stepActive + 1)}>Siguiente</button>
+        )}
+        { stepActive === 8 && (
+          <button className="bg-blue-600 text-white px-4 py-2 rounded text-sm mt-6">Guardar información</button>
+        )}
+      </div>
     </section>
   )
 }
