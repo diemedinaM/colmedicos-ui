@@ -15,6 +15,13 @@ const menuItems = [
       label: "Panel de Gestión Documental",
       href: "/legal"
     }]
+  },
+  {
+    label: "2. Centros de Costos",
+    submenu: [{
+      label: "Creación",
+      href: "/ceco/create"
+    }]
   }
 ];
 
