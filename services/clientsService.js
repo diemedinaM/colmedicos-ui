@@ -14,7 +14,7 @@ export const clientsService = {
         }
     },
     updateClient: async (id, client) => {
-        const response = await api.put(`/clients/client/${id}`, client);
+        const response = await api.put(`/clients/client/${id}/`, client);
         return response.data;
     },
     getClientById: async (id) => {
@@ -22,7 +22,7 @@ export const clientsService = {
         return response.data;
     },
     patchClient: async (id, client) => {
-        const response = await api.patch(`/clients/client/${id}`, client);
+        const response = await api.patch(`/clients/client/${id}/`, client);
         return response.data;
     },
     deleteClient: async (id) => {

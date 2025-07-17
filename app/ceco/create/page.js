@@ -173,7 +173,7 @@ export default function CreateCeco() {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1 required">Adjuntar Archivo</label>
                         <div className="flex items-center gap-2">
-                        <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Adjuntar archivo" readOnly />
+                        <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded" placeholder="Adjuntar archivo" />
                         <input type="file" className="hidden" id="fileRut" />
                         <button type="button" className="px-6 py-3 bg-gray-200 rounded border border-gray-300 text-xs" onClick={() => document.getElementById('fileRut').click()}>Subir</button>
                         </div>
