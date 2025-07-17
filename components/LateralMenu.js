@@ -22,6 +22,13 @@ const menuItems = [
       label: "Creación",
       href: "/ceco/create"
     }]
+  },
+  {
+    label: "3. Empleados",
+    submenu: [{
+      label: "Gestión de Empleados",
+      href: "/employees"
+    }]
   }
 ];
 
