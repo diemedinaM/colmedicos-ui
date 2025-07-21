@@ -43,7 +43,7 @@ export default function LateralMenu() {
     <nav className="bg-[#335dab] text-white h-screen fixed w-[260px] flex flex-col px-4 py-6">
       <div className="flex justify-center mb-4">
         <Image 
-          src="/colmedicos-ui/logo.svg" 
+          src="/colmedicos-ui/logo.svg"
           alt="Colmedicos" 
           width={180} 
           height={80}

@@ -2,7 +2,7 @@ import api from './api';
 
 export const clientsService = {
     getClient: async () => {
-        const response = await api.get('/clients/client');
+        const response = await api.get('/clients/client?page_size=10000');
         return response.data;
     },
     createClient: async (client) => {
