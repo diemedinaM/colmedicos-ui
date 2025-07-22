@@ -7,6 +7,7 @@ import styles from "./AdminView.module.css";
 export default function PagedTable({ 
   adminConfig,
   data = [],
+  displayFields = [],
   loading = false,
   pagination = {},
   onPageChange,
@@ -130,7 +131,7 @@ export default function PagedTable({
     return <LoadingSpinner message="Loading table configuration..." />;
   }
 
-  const listDisplay = adminConfig.fields.map(field => field.name) || [];
+  const listDisplay = displayFields || adminConfig.fields.map(field => field.name) || [];
   const isTableLoading = loading || sortLoading || pageLoading;
 
   return (

@@ -87,7 +87,10 @@ function AdminContent({
   initialParams = {},
   onRowClick = null,
   onAddClick = null,
-  showAddButton = false
+  showAddButton = false,
+  displayFieldsProp = [],
+  searchFieldsProp = [],
+  filtersProp = []
 }) {
   const {
     adminConfig,
@@ -138,16 +141,13 @@ function AdminContent({
     return <LoadingSpinner message="Loading configuration..." />;
   }
 
-  const model = adminConfig; // The whole object is now the model schema
-  const searchFields = []  // TODO: Add search fields;
-  const hasFilters = []  // TODO: Add filters;
+  const hasFilters = filtersProp.length > 0;
 
   return (
     <>
-      {/* Top Bar */}
       <TopBar
         title={adminConfig.verbose_name_plural}
-        searchFields={searchFields}
+        searchFields={searchFieldsProp}
         searchTerm={searchTerm}
         onSearch={handleSearch}
         onAddClick={handleAddClick}
@@ -157,13 +157,13 @@ function AdminContent({
 
       <div className={styles.contentContainer}>
         <div className={styles.mainLayout}>
-          {/* Table Section - Left Side */}
           <div className={hasFilters ? styles.tableSection : styles.centerTable}>
             <ErrorBoundary>
               <Suspense fallback={<LoadingSpinner message="Loading data..." />}>
                 <PagedTable
                   adminConfig={adminConfig}
                   data={data}
+                  displayFields={displayFieldsProp}
                   loading={loading}
                   pagination={pagination}
                   onPageChange={handlePageChange}
@@ -175,13 +175,12 @@ function AdminContent({
             </ErrorBoundary>
           </div>
 
-          {/* Filter Panel - Right Side */}
           {hasFilters && (
             <div className={styles.filterPanel}>
               <ErrorBoundary>
                 <FilterPanel
                   adminConfig={adminConfig}
-                  filters={filters}
+                  filters={filtersProp}
                   onFilterChange={handleFilterChange}
                   onReset={handleFilterReset}
                 />
@@ -201,7 +200,10 @@ export default function AdminView({
   onRowClick = null,
   onAddClick = null,
   showAddButton = false,
-  className = ""
+  className = "",
+  displayFields = [],
+  searchFields = [],
+  filters = []
 }) {
   return (
     <div className={`${styles.adminView} ${className}`}>
@@ -214,6 +216,9 @@ export default function AdminView({
             onRowClick={onRowClick}
             onAddClick={onAddClick}
             showAddButton={showAddButton}
+            displayFieldsProp={displayFields}
+            searchFieldsProp={searchFields}
+            filtersProp={filters}
           />
         </Suspense>
       </ErrorBoundary>

@@ -28,9 +28,12 @@ export default function EmployeesPage() {
           onRowClick={handleRowClick}
           onAddClick={handleAddClick}
           showAddButton={false} // Disabled as requested
-          className="min-h-screen"
+          //className="min-h-screen"
+          displayFields={["username", "email", "first_name", "last_name"]}
+          searchFields={["name"]}
+          filters={["name"]}
         />
       </Suspense>
     </ErrorBoundary>
   );
-} 
+}
