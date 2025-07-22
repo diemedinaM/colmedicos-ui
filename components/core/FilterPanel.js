@@ -21,8 +21,7 @@ export default function FilterPanel({
     return null;
   }
 
-  const { admin, model } = adminConfig;
-  const listFilter = admin.list_filter || [];
+  const listFilter = [];  // TODO: Add filters;
 
   if (listFilter.length === 0) {
     return null;
@@ -202,7 +201,7 @@ export default function FilterPanel({
         
         <div className={styles.filterContent}>
           {listFilter.map(filterName => {
-            const field = model.fields.find(f => f.name === filterName);
+            const field = adminConfig.fields.find(f => f.name === filterName);
             if (!field) return null;
 
             return (

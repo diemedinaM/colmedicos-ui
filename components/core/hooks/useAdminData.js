@@ -28,7 +28,7 @@ export function useAdminData(appName, modelName, initialParams = {}) {
       setError(null);
       const config = await adminService.getModelAdmin(appName, modelName);
       setAdminConfig(config);
-      setPageSize(config.admin.list_per_page || 50);
+      setPageSize(50);
       return config;
     } catch (err) {
       const errorMessage = `Error loading admin configuration: ${err.message}`;
