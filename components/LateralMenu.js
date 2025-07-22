@@ -25,9 +25,40 @@ const menuItems = [
   },
   {
     label: "3. Empleados",
+    submenu: [
+      {
+        label: "Empleados",
+        href: "/employees/employees"
+      },
+      {
+        label: "Candidatos",
+        href: "/employees/candidates"
+      },
+      {
+        label: "Administradores",
+        href: "/employees/administrators"
+      }
+    ]
+  },
+  {
+    label: "4. Sedes",
     submenu: [{
-      label: "Gestión de Empleados",
-      href: "/employees"
+      label: "Sedes",
+      href: "/facilities"
+    }]
+  },
+  {
+    label: "5. Configuración",
+    submenu: [{
+      label: "Grupos de permisos",
+      href: "/settings/groups"
+    }]
+  },
+  {
+    label: "6. Auditoría",
+    submenu: [{
+      label: "Registros",
+      href: "/core/auditlogs"
     }]
   }
 ];

@@ -8,6 +8,78 @@ import LoadingSpinner from "./LoadingSpinner";
 import ErrorBoundary from "./ErrorBoundary";
 import styles from "./AdminView.module.css";
 
+// Helper function to check if error is a 404
+function is404Error(error) {
+  return error && (
+    error.includes('404') || 
+    error.includes('Not Found') || 
+    error.includes('not found')
+  );
+}
+
+// Helper function to create fallback config for 404 errors
+function createFallbackConfig(modelName) {
+    return {
+      "name": modelName,
+      "app_label": "common",
+      "verbose_name": modelName.charAt(0).toUpperCase() + modelName.slice(1),
+      "verbose_name_plural": modelName.charAt(0).toUpperCase() + modelName.slice(1) + 's',
+      "db_table": "",
+      "fields": []
+  }
+}
+
+// Component to render empty admin interface for 404 errors
+function EmptyAdminInterface({ modelName, onRowClick, onAddClick, showAddButton }) {
+  const fallbackConfig = createFallbackConfig(modelName);
+
+  const handleRowClick = (item) => {
+    if (onRowClick) onRowClick(item);
+  };
+
+  const handleAddClick = () => {
+    if (onAddClick) onAddClick();
+  };
+
+  return (
+    <>
+      <TopBar
+        title={fallbackConfig.verbose_name_plural}
+        searchFields={[]}
+        searchTerm=""
+        onSearch={() => {}}
+        onAddClick={handleAddClick}
+        addButtonLabel={`Add ${fallbackConfig.verbose_name}`}
+        showAddButton={showAddButton}
+      />
+
+      <div className={styles.contentContainer}>
+        <div className={styles.mainLayout}>
+          <div className={styles.centerTable}>
+            <PagedTable
+              adminConfig={fallbackConfig}
+              data={[]}
+              loading={false}
+              pagination={{
+                count: 0,
+                next: null,
+                previous: null,
+                current_page: 1,
+                total_pages: 1,
+                page_size: 50
+              }}
+              onPageChange={() => {}}
+              onRowClick={handleRowClick}
+              onSort={() => {}}
+              currentSort={{}}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 // Separate component for the admin data that can be suspended
 function AdminContent({ 
   appName, 
@@ -46,27 +118,40 @@ function AdminContent({
   };
 
   if (error) {
-    throw new Error(error);
+    // Handle 404 errors gracefully by showing empty interface
+    if (is404Error(error)) {
+      return (
+        <EmptyAdminInterface
+          modelName={modelName}
+          onRowClick={onRowClick}
+          onAddClick={onAddClick}
+          showAddButton={showAddButton}
+        />
+      );
+    } else {
+      // For other types of errors, still throw
+      throw new Error(error);
+    }
   }
 
   if (!adminConfig) {
     return <LoadingSpinner message="Loading configuration..." />;
   }
 
-  const { admin, model } = adminConfig;
-  const searchFields = admin.search_fields || [];
-  const hasFilters = admin.list_filter && admin.list_filter.length > 0;
+  const model = adminConfig; // The whole object is now the model schema
+  const searchFields = []  // TODO: Add search fields;
+  const hasFilters = []  // TODO: Add filters;
 
   return (
     <>
       {/* Top Bar */}
       <TopBar
-        title={model.verbose_name_plural}
+        title={adminConfig.verbose_name_plural}
         searchFields={searchFields}
         searchTerm={searchTerm}
         onSearch={handleSearch}
         onAddClick={handleAddClick}
-        addButtonLabel={`Add ${model.verbose_name}`}
+        addButtonLabel={`Add ${adminConfig.verbose_name}`}
         showAddButton={showAddButton}
       />
 

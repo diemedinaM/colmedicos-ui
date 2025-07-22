@@ -69,7 +69,7 @@ export default function PagedTable({
   const getDisplayValue = (item, fieldName) => {
     if (!adminConfig) return '';
     
-    const field = adminConfig.model.fields.find(f => f.name === fieldName);
+    const field = adminConfig.fields.find(f => f.name === fieldName);
     const value = item[fieldName];
 
     if (value === null || value === undefined) {
@@ -105,7 +105,7 @@ export default function PagedTable({
   const getColumnHeader = (fieldName) => {
     if (!adminConfig) return fieldName;
     
-    const field = adminConfig.model.fields.find(f => f.name === fieldName);
+    const field = adminConfig.fields.find(f => f.name === fieldName);
     return field ? field.verbose_name : fieldName;
   };
 
@@ -113,7 +113,7 @@ export default function PagedTable({
   const isFieldSortable = (fieldName) => {
     if (!adminConfig) return false;
     
-    const field = adminConfig.model.fields.find(f => f.name === fieldName);
+    const field = adminConfig.fields.find(f => f.name === fieldName);
     // Most fields are sortable except for certain types
     return field && !['OneToOneRel', 'ManyToManyField'].includes(field.type);
   };
@@ -130,8 +130,7 @@ export default function PagedTable({
     return <LoadingSpinner message="Loading table configuration..." />;
   }
 
-  const { admin, model } = adminConfig;
-  const listDisplay = admin.list_display || [];
+  const listDisplay = adminConfig.fields.map(field => field.name) || [];
   const isTableLoading = loading || sortLoading || pageLoading;
 
   return (
