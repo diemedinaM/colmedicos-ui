@@ -54,22 +54,72 @@ export default function FormBuilder({ schema }) {
                 </div>
 
                 {/* Active Tab Content */}
-                <div className="grid grid-cols-2 gap-6">
-                    {tabs[activeTab].groups.map((group) => (
-                        <div
-                            key={group.key}
-                            className={group.variant === "fullWidth" ? "col-span-2" : "col-span-1"}
-                        >
-                            <fieldset className="border border-gray-300 rounded-md p-4 relative">
-                                {group.title && (
-                                    <legend className="text-sm font-medium px-2 text-gray-700 bg-white -ml-1">
-                                        {group.title}
-                                    </legend>
-                                )}
-                                <GroupRenderer group={group} />
-                            </fieldset>
-                        </div>
-                    ))}
+                <div className="grid grid-cols-2 gap-6 w-full">
+                    {(() => {
+                        // Split groups by alignment
+                        const groups = tabs[activeTab].groups;
+                        const leftGroups = [];
+                        const rightGroups = [];
+                        const fullWidthGroups = [];
+                        const autoGroups = [];
+                        groups.forEach((group) => {
+                            if (group.variant === "fullWidth") {
+                                fullWidthGroups.push(group);
+                            } else if (group.alignment === "left") {
+                                leftGroups.push(group);
+                            } else if (group.alignment === "right") {
+                                rightGroups.push(group);
+                            } else {
+                                autoGroups.push(group);
+                            }
+                        });
+                        // Distribute autoGroups alternately (left, right)
+                        autoGroups.forEach((group, idx) => {
+                            (idx % 2 === 0 ? leftGroups : rightGroups).push(group);
+                        });
+                        // Render fullWidth groups first, then columns
+                        return (
+                            <>
+                                {fullWidthGroups.map((group) => (
+                                    <div key={group.key} className="col-span-2">
+                                        <fieldset className="border border-gray-300 rounded-md p-4 relative">
+                                            {group.title && (
+                                                <legend className="text-sm font-medium px-2 text-gray-700 bg-white -ml-1">
+                                                    {group.title}
+                                                </legend>
+                                            )}
+                                            <GroupRenderer group={group} />
+                                        </fieldset>
+                                    </div>
+                                ))}
+                                {/* Two columns: left and right */}
+                                <div className="col-span-1 w-full h-full flex flex-col gap-6">
+                                    {leftGroups.map((group) => (
+                                        <fieldset key={group.key} className="border border-gray-300 rounded-md p-4 relative w-full">
+                                            {group.title && (
+                                                <legend className="text-sm font-medium px-2 text-gray-700 bg-white -ml-1">
+                                                    {group.title}
+                                                </legend>
+                                            )}
+                                            <GroupRenderer group={group} />
+                                        </fieldset>
+                                    ))}
+                                </div>
+                                <div className="col-span-1 w-full h-full flex flex-col gap-6">
+                                    {rightGroups.map((group) => (
+                                        <fieldset key={group.key} className="border border-gray-300 rounded-md p-4 relative w-full">
+                                            {group.title && (
+                                                <legend className="text-sm font-medium px-2 text-gray-700 bg-white -ml-1">
+                                                    {group.title}
+                                                </legend>
+                                            )}
+                                            <GroupRenderer group={group} />
+                                        </fieldset>
+                                    ))}
+                                </div>
+                            </>
+                        );
+                    })()}
                 </div>
 
                 {/* Footer Actions */}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { es } from "date-fns/locale";
@@ -13,6 +13,13 @@ export default function CustomDatePicker({
 }) {
     // Convert value to Date if string (for React Hook Form compatibility)
     const dateValue = value ? (value instanceof Date ? value : new Date(value)) : null;
+    const datePickerRef = useRef(null);
+
+    const handleIconClick = () => {
+        if (datePickerRef.current) {
+            datePickerRef.current.setOpen(true);
+        }
+    };
 
     return (
         <div className="flex items-start gap-4 w-full">
@@ -21,24 +28,34 @@ export default function CustomDatePicker({
                     {label}
                 </label>
             )}
-            <div className="relative w-full max-w-md">
+            <div className="w-full max-w-md flex items-center">
                 <DatePicker
+                    ref={datePickerRef}
                     selected={dateValue}
                     onChange={(date) => onChange(date)}
                     dateFormat="dd/MM/yyyy"
                     locale={es}
                     name={name}
                     disabled={disabled}
-                    className={`w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 pr-10 ${disabled ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
+                    className={`w-full max-w-md bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
                     calendarClassName="z-20"
                     placeholderText="DD/MM/AAAA"
                     autoComplete="off"
                     popperPlacement="bottom-end"
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
                 />
-                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400">
+                <button
+                    type="button"
+                    tabIndex={-1}
+                    className="text-gray-400 ml-2 flex items-center focus:outline-none cursor-pointer"
+                    onClick={handleIconClick}
+                    disabled={disabled}
+                    aria-label="Abrir calendario"
+                >
                     <FaRegCalendarAlt />
-                </span>
+                </button>
             </div>
         </div>
     );
