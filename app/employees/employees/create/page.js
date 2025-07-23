@@ -2,6 +2,7 @@
 
 import FormBuilder from "@/components/widgets/BasicFormBuilder";
 import SimpleModelDropdown from "@/components/widgets/SimpleModelDropdown";
+import SimpleSignatureInput from "@/components/widgets/SimpleSignatureInput";
 
 const schema = {
   initialValues: {
@@ -10,24 +11,41 @@ const schema = {
   },
   tabs: [
     {
-      key: "details",
-      label: "Details",
+      key: "personal_information",
+      label: "Información personal",
       groups: [
         {
-          key: "col1",
-          title: "Grupo de permisos 1",
+          key: "personal_information",
+          title: "Información personal",
           variant: "stack",
           widgets: [
             {
-              key: "group1",
+              key: "document_type",
               component: SimpleModelDropdown,
               props: {
-                name: "Grupo de permisos 1",
+                name: "Tipo de documento",
                 appName: "common",
-                modelName: "group",
+                modelName: "document-type",
                 displayField: "name",
               },
             },
+            {
+                key: "gender",
+                component: SimpleModelDropdown,
+                props: {
+                  name: "Género",
+                  appName: "employees",
+                  modelName: "gender",
+                  displayField: "name",
+                },
+              },
+            // {
+            //   key: "signature",
+            //   component: SimpleSignatureInput,
+            //   props: {
+            //     name: "Firma",
+            //   },
+            // },
           ],
         },
         {
