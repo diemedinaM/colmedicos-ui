@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { FaUpload, FaPen, FaTrashAlt, FaSave } from "react-icons/fa";
 import clsx from "clsx";
 
-export default function SimpleSignatureInput({ name, value, onChange }) {
+export default function SimpleSignatureInput({ name, label, value, onChange }) {
   const [tab, setTab] = useState("upload"); // "upload" | "draw"
   // const [preview, setPreview] = useState(value || null);
   const canvasRef = useRef(null);
@@ -68,11 +68,12 @@ export default function SimpleSignatureInput({ name, value, onChange }) {
 
   return (
     <div className="w-full max-w-xl border border-gray-300 rounded-md p-4">
-      {name && <label className="w-32 text-right pt-2 text-sm font-medium text-gray-700">{name}</label>}
+      {label && <label className="w-32 text-right pt-2 text-sm font-medium text-gray-700">{label}</label>}
 
       {/* Tab Selector */}
       <div className="flex border-b mb-3">
         <button
+          type="button"
           onClick={() => setTab("upload")}
           className={clsx(
             "px-4 py-2 text-sm font-medium flex items-center gap-2",
@@ -84,6 +85,7 @@ export default function SimpleSignatureInput({ name, value, onChange }) {
           <FaUpload /> Subir Archivo
         </button>
         <button
+          type="button"
           onClick={() => setTab("draw")}
           className={clsx(
             "px-4 py-2 text-sm font-medium flex items-center gap-2",
@@ -128,12 +130,14 @@ export default function SimpleSignatureInput({ name, value, onChange }) {
           />
           <div className="mt-3 flex gap-3">
             <button
+              type="button"
               onClick={clearCanvas}
               className="flex items-center gap-2 px-4 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
             >
               <FaTrashAlt /> Limpiar
             </button>
             <button
+              type="button"
               onClick={saveCanvas}
               className="flex items-center gap-2 px-4 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
             >
