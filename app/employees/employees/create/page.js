@@ -15,6 +15,7 @@ const schema = {
       groups: [
         {
           key: "col1",
+          title: "Grupo de permisos 1",
           variant: "stack",
           widgets: [
             {
@@ -31,6 +32,7 @@ const schema = {
         },
         {
           key: "col2",
+          title: "Grupo de permisos 2",
           variant: "stack",
           widgets: [
             {
@@ -53,6 +55,7 @@ const schema = {
       groups: [
         {
           key: "wide",
+          title: "Grupo de permisos 3",
           variant: "fullWidth",
           widgets: [
             {
