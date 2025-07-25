@@ -29,6 +29,9 @@ export default function FacilitiesPage() {
           onAddClick={handleAddClick}
           showAddButton={false} // Disabled as requested
           className="min-h-screen"
+          displayFields={["id", "name"]}
+          searchFields={["name"]}
+          filters={["name"]}
         />
       </Suspense>
     </ErrorBoundary>
