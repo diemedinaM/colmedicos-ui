@@ -80,18 +80,6 @@ export default function FormBuilder({ schema }) {
                         // Render fullWidth groups first, then columns
                         return (
                             <>
-                                {fullWidthGroups.map((group) => (
-                                    <div key={group.key} className="col-span-2">
-                                        <fieldset className="border border-gray-300 rounded-md p-4 relative">
-                                            {group.title && (
-                                                <legend className="text-sm font-medium px-2 text-gray-700 bg-white -ml-1">
-                                                    {group.title}
-                                                </legend>
-                                            )}
-                                            <GroupRenderer group={group} />
-                                        </fieldset>
-                                    </div>
-                                ))}
                                 {/* Two columns: left and right */}
                                 <div className="col-span-1 w-full h-full flex flex-col gap-6">
                                     {leftGroups.map((group) => (
@@ -117,6 +105,19 @@ export default function FormBuilder({ schema }) {
                                         </fieldset>
                                     ))}
                                 </div>
+                                {/* Full width groups */}
+                                {fullWidthGroups.map((group) => (
+                                    <div key={group.key} className="col-span-2">
+                                        <fieldset className="border border-gray-300 rounded-md p-4 relative">
+                                            {group.title && (
+                                                <legend className="text-sm font-medium px-2 text-gray-700 bg-white -ml-1">
+                                                    {group.title}
+                                                </legend>
+                                            )}
+                                            <GroupRenderer group={group} />
+                                        </fieldset>
+                                    </div>
+                                ))}
                             </>
                         );
                     })()}

@@ -10,6 +10,7 @@ import workInformationTab from "./tabs/workInformation";
 import bonusesTab from "./tabs/bonuses";
 import documentationTab from "./tabs/documentation";
 import permissionsTab from "./tabs/permissions";
+import hiringNoveltyTab from "./tabs/hiringNovelty";
 
 
 const schema = {
@@ -27,6 +28,7 @@ const schema = {
         bonusesTab,
         documentationTab,
         permissionsTab,
+        hiringNoveltyTab,
     ],
     onSubmit: (values) => {
         console.log("Form submitted:", values);

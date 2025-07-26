@@ -3,6 +3,7 @@ import DynamicModelDropdown from "@/components/widgets/DynamicModelDropdown";
 import CustomDatePicker from "@/components/widgets/DatePicker";
 import TextInput from "@/components/widgets/TextInput";
 import SimpleSignatureInput from "@/components/widgets/SimpleSignatureInput";
+import ToggleButton from "@/components/widgets/ToggleButton";
 
 
 const personalInformationGroup = {
@@ -136,6 +137,36 @@ const locationInformationGroup = {
                 query: "province",
             },
         },
+        {
+            key: "neighborhood",
+            component: TextInput,
+            props: {
+                name: "neighborhood",
+                label: "Barrio",
+            },
+        },
+        {
+            key: "address",
+            component: TextInput,
+            props: {
+                name: "address",
+                label: "Dirección",
+            },
+        },
+        {
+            key: "social_class",
+            component: DynamicModelDropdown,
+            // Use a function to access form state
+            props: {
+                name: "social_class",
+                label: "Estrato",
+                appName: "employees",
+                modelName: "social-class",
+                displayField: "name",
+                parentField: "country",
+                query: "country",
+            },
+        },
     ]
 }
 
@@ -146,11 +177,11 @@ const contactInformationGroup = {
     alignment: "right",
     widgets: [
         {
-            key: "email",
+            key: "personal_email",
             component: TextInput,
             props: {
-                name: "email",
-                label: "Email",
+                name: "personal_email",
+                label: "Correo personal",
 
             }
         },
@@ -166,6 +197,51 @@ const contactInformationGroup = {
     ]
 }
 
+const emergencyContactGroup = {
+    key: "emergency_contact",
+    title: "Contacto de emergencia",
+    variant: "stack",
+    alignment: "right",
+    widgets: [
+        {
+            key: "emergency_contact_name",
+            component: TextInput,
+            props: {
+                name: "name",
+                label: "Nombre",
+
+            }
+        },
+    ]
+}
+
+
+const dependentsInformationGroup = {
+    key: "dependents_information",
+    title: "Dependientes",
+    variant: "stack",
+    alignment: "right",
+    widgets: [
+
+    ]
+}
+
+const petInformationGroup = {
+    key: "pet_information",
+    title: "Mascotas",
+    variant: "stack",
+    alignment: "right",
+    widgets: [
+        {
+            key: "has_pets",
+            component: ToggleButton,
+            props: {
+                name: "has_pets",
+                label: "¿Tiene mascotas?",
+            },
+        }
+    ]
+}
 const signatureGroup = {
     key: "signature",
     title: "Firma",
@@ -191,7 +267,10 @@ const personalInformationTab = {
         personalInformationGroup,
         locationInformationGroup,
         contactInformationGroup,
-        signatureGroup
+        signatureGroup,
+        emergencyContactGroup,
+        dependentsInformationGroup,
+        petInformationGroup
     ],
 }
 
