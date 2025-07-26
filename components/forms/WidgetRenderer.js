@@ -1,30 +1,31 @@
 /**
  * WidgetRenderer - Renders an individual widget, integrating with React Hook Form if needed.
  *
+ * Supports meta properties:
+ *   - hideOnToggle: { field: string, value?: boolean }
+ *   - disableOnToggle: { field: string, value?: boolean }
+ *
  * Props:
- *   widget: {
- *     component: React.ComponentType,
- *     props: object | (methods) => object,
- *     variant?: string,
- *     subWidgets?: Array<WidgetSchema>,
- *     min?: number,
- *     max?: number,
- *     label?: string
- *   }
+ *   widget: {...}, parentDisabled?: boolean
  *
  * Usage:
- *   <WidgetRenderer widget={widget} />
+ *   <WidgetRenderer widget={widget} parentDisabled={false} />
  */
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import StackedInline from "./StackedInline";
+import useMetaToggle from "./useMetaToggle";
 
-export default function WidgetRenderer({ widget }) {
+export default function WidgetRenderer({ widget, parentDisabled }) {
     const { component: Component, props, variant, subWidgets, min, max, label } = widget;
     const methods = useFormContext();
+    const [hidden, disabled] = useMetaToggle(widget);
+    const effectiveDisabled = parentDisabled || disabled;
     const widgetProps = typeof props === "function"
         ? props(methods)
         : props;
+
+    if (hidden) return null;
 
     // Support for stackedInline variant
     if (variant === "stackedInline") {
@@ -35,6 +36,7 @@ export default function WidgetRenderer({ widget }) {
                 max={max}
                 widgets={subWidgets}
                 label={label}
+                parentDisabled={effectiveDisabled}
             />
         );
     }
@@ -50,6 +52,7 @@ export default function WidgetRenderer({ widget }) {
                             {...widgetProps}
                             value={field.value}
                             onChange={field.onChange}
+                            disabled={effectiveDisabled || widgetProps.disabled}
                         />
                         {fieldState.error && (
                             <p className="mt-1 text-sm text-red-600">
@@ -62,5 +65,5 @@ export default function WidgetRenderer({ widget }) {
         );
     }
 
-    return <Component {...widgetProps} />;
+    return <Component {...widgetProps} disabled={effectiveDisabled || widgetProps.disabled} />;
 } 

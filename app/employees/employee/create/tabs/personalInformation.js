@@ -4,6 +4,7 @@ import CustomDatePicker from "@/components/widgets/DatePicker";
 import TextInput from "@/components/widgets/TextInput";
 import SimpleSignatureInput from "@/components/widgets/SimpleSignatureInput";
 import ToggleButton from "@/components/widgets/ToggleButton";
+import NumberInput from "@/components/widgets/NumberInput";
 
 
 const personalInformationGroup = {
@@ -256,7 +257,71 @@ const dependentsInformationGroup = {
     variant: "stack",
     alignment: "right",
     widgets: [
-
+        {
+            key: "has_dependents",
+            component: ToggleButton,
+            props: {
+                name: "has_dependents",
+                label: "¿Tiene dependientes?",
+            },
+        },
+        {
+            key: "dependents",
+            variant: "stackedInline",
+            min: 0,
+            max: 10,
+            props: { name: "dependents" },
+            label: "Dependiente",
+            hideOnToggle: { field: "has_dependents", value: true }, // Hide if has_dependents is false
+            subWidgets: [
+                {
+                    key: "dependent_document_type",
+                    component: SimpleModelDropdown,
+                    props: {
+                        name: "dependent_document_type",
+                        label: "Tipo de documento",
+                        appName: "common",
+                        modelName: "document-type",
+                        displayField: "name",
+                    }
+                },
+                {
+                    key: "dependent_document",
+                    component: TextInput,
+                    props: {
+                        name: " ",
+                        label: "Documento",
+                    }
+                },
+                {
+                    key: "dependent_name",
+                    component: TextInput,
+                    props: {
+                        name: "dependent_name",
+                        label: "Nombre",
+                    }
+                },
+                {
+                    key: "dependent_birth_date",
+                    component: CustomDatePicker,
+                    props: {
+                        name: "dependent_birth_date",
+                        label: "Fecha de nacimiento",
+                    }
+                },
+                {
+                    key: "dependent_relationship",
+                    component: SimpleModelDropdown,
+                    props: {
+                        name: "dependent_relationship",
+                        label: "Parentesco",
+                        appName: "common",
+                        modelName: "relationship",
+                        displayField: "name",
+                    }
+                },
+            ]
+        }
     ]
 }
 
@@ -273,9 +338,32 @@ const petInformationGroup = {
                 name: "has_pets",
                 label: "¿Tiene mascotas?",
             },
+        },
+        {
+            key: "pets",
+            variant: "stackedInline",
+            min: 0,
+            max: 100,
+            props: { name: "pets" },
+            label: "Mascota",
+            hideOnToggle: { field: "has_pets", value: true }, // Hide if has_pets is false
+            subWidgets: [
+                {
+                    key: "pet_type",
+                    component: SimpleModelDropdown,
+                    props: {
+                        name: "pet_type",
+                        label: "Tipo de mascota",
+                        appName: "common",
+                        modelName: "pet",
+                        displayField: "name",
+                    }
+                }
+            ]
         }
     ]
 }
+
 const signatureGroup = {
     key: "signature",
     title: "Firma",

@@ -1,26 +1,29 @@
 /**
  * StackedInline - Handles array fields (add/remove multiple items) in the form.
  *
+ * Supports parentDisabled prop for disabling all controls.
+ *
  * Props:
  *   name: string (field name in form)
  *   min?: number (minimum items)
  *   max?: number (maximum items)
  *   widgets: Array<WidgetSchema> (widgets to render for each item)
  *   label?: string (label for each item)
+ *   parentDisabled?: boolean (disable all controls)
  *
  * Usage:
- *   <StackedInline name="field" min={1} max={5} widgets={...} label="Item" />
+ *   <StackedInline name="field" min={1} max={5} widgets={...} label="Item" parentDisabled={false} />
  */
 import React, { useEffect } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import WidgetRenderer from "./WidgetRenderer";
 
-export default function StackedInline({ name, min = 1, max = 5, widgets, label }) {
+export default function StackedInline({ name, min = 1, max = 5, widgets, label, parentDisabled }) {
     const { control, watch } = useFormContext();
     const { fields, append, remove } = useFieldArray({ control, name });
     const values = watch(name) || [];
-    const canAdd = fields.length < max;
-    const canRemove = fields.length > min;
+    const canAdd = fields.length < max && !parentDisabled;
+    const canRemove = fields.length > min && !parentDisabled;
 
     // Ensure at least `min` items are rendered on mount
     useEffect(() => {
@@ -62,6 +65,7 @@ export default function StackedInline({ name, min = 1, max = 5, widgets, label }
                                         name: `${name}[${idx}].${widget.props.name}`,
                                     },
                                 }}
+                                parentDisabled={parentDisabled}
                             />
                         ))}
                     </div>
