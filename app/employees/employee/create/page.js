@@ -1,6 +1,6 @@
 "use client";
 
-import FormBuilder from "@/components/widgets/BasicFormBuilder";
+import { FormBuilder } from "@/components/forms";
 import personalInformationTab from "./tabs/personalInformation";
 import academicInformationTab from "./tabs/academicInformation";
 import socialSecurityTab from "./tabs/socialSecurity";
