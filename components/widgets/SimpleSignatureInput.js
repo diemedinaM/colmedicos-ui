@@ -67,100 +67,102 @@ export default function SimpleSignatureInput({ name, label, value, onChange }) {
   };
 
   return (
-    <div className="w-full max-w-xl border border-gray-300 rounded-md p-4">
-      {label && <label className="w-32 text-right pt-2 text-sm font-medium text-gray-700">{label}</label>}
+    <div className="flex justify-center w-full">
+      <div className="w-full max-w-xl border border-gray-300 rounded-md p-4">
+        {label && <label className="w-32 text-right pt-2 text-sm font-medium text-gray-700">{label}</label>}
 
-      {/* Tab Selector */}
-      <div className="flex border-b mb-3">
-        <button
-          type="button"
-          onClick={() => setTab("upload")}
-          className={clsx(
-            "px-4 py-2 text-sm font-medium flex items-center gap-2",
-            tab === "upload"
-              ? "border-b-2 border-blue-500 text-blue-600"
-              : "text-gray-500"
-          )}
-        >
-          <FaUpload /> Subir Archivo
-        </button>
-        <button
-          type="button"
-          onClick={() => setTab("draw")}
-          className={clsx(
-            "px-4 py-2 text-sm font-medium flex items-center gap-2",
-            tab === "draw"
-              ? "border-b-2 border-blue-500 text-blue-600"
-              : "text-gray-500"
-          )}
-        >
-          <FaPen /> Firmar Digitalmente
-        </button>
-      </div>
-
-      {/* Content */}
-      {tab === "upload" && (
-        <div className="border border-dashed border-gray-300 rounded-md p-6 text-center cursor-pointer hover:bg-gray-50">
-          <input
-            type="file"
-            accept="image/png, image/jpeg, image/gif"
-            className="hidden"
-            id="fileInput"
-            onChange={handleFileChange}
-          />
-          <label htmlFor="fileInput" className="block text-gray-600 cursor-pointer">
-            <div className="text-3xl mb-2">📤</div>
-            Arrastra una imagen aquí o haz clic para seleccionar<br />
-            <span className="text-sm text-gray-500">Formatos soportados: JPG, PNG, GIF (máx. 2MB)</span>
-          </label>
+        {/* Tab Selector */}
+        <div className="flex border-b mb-3">
+          <button
+            type="button"
+            onClick={() => setTab("upload")}
+            className={clsx(
+              "px-4 py-2 text-sm font-medium flex items-center gap-2",
+              tab === "upload"
+                ? "border-b-2 border-blue-500 text-blue-600"
+                : "text-gray-500"
+            )}
+          >
+            <FaUpload /> Subir Archivo
+          </button>
+          <button
+            type="button"
+            onClick={() => setTab("draw")}
+            className={clsx(
+              "px-4 py-2 text-sm font-medium flex items-center gap-2",
+              tab === "draw"
+                ? "border-b-2 border-blue-500 text-blue-600"
+                : "text-gray-500"
+            )}
+          >
+            <FaPen /> Firmar Digitalmente
+          </button>
         </div>
-      )}
 
-      {tab === "draw" && (
-        <div className="flex flex-col items-center">
-          <canvas
-            ref={canvasRef}
-            width={400}
-            height={150}
-            className="border rounded bg-white"
-            onMouseDown={startDraw}
-            onMouseMove={draw}
-            onMouseUp={endDraw}
-            onMouseLeave={endDraw}
-          />
-          <div className="mt-3 flex gap-3">
-            <button
-              type="button"
-              onClick={clearCanvas}
-              className="flex items-center gap-2 px-4 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
-            >
-              <FaTrashAlt /> Limpiar
-            </button>
-            <button
-              type="button"
-              onClick={saveCanvas}
-              className="flex items-center gap-2 px-4 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
-            >
-              <FaSave /> Guardar Firma
-            </button>
+        {/* Content */}
+        {tab === "upload" && (
+          <div className="border border-dashed border-gray-300 rounded-md p-6 text-center cursor-pointer hover:bg-gray-50">
+            <input
+              type="file"
+              accept="image/png, image/jpeg, image/gif"
+              className="hidden"
+              id="fileInput"
+              onChange={handleFileChange}
+            />
+            <label htmlFor="fileInput" className="block text-gray-600 cursor-pointer">
+              <div className="text-3xl mb-2">📤</div>
+              Arrastra una imagen aquí o haz clic para seleccionar<br />
+              <span className="text-sm text-gray-500">Formatos soportados: JPG, PNG, GIF (máx. 2MB)</span>
+            </label>
           </div>
-          <p className="text-sm text-gray-500 mt-2">Dibuja tu firma en el área de arriba</p>
-        </div>
-      )}
+        )}
 
-      {/* Preview of saved signature */}
-      {value && (
-        <div className="mt-6">
-          <p className="text-sm text-gray-600 mb-2">Vista previa de la firma:</p>
-          <img src={value} alt="Firma guardada" className="max-w-xs border rounded shadow" />
-        </div>
-      )}
+        {tab === "draw" && (
+          <div className="flex flex-col items-center">
+            <canvas
+              ref={canvasRef}
+              width={400}
+              height={150}
+              className="border rounded bg-white"
+              onMouseDown={startDraw}
+              onMouseMove={draw}
+              onMouseUp={endDraw}
+              onMouseLeave={endDraw}
+            />
+            <div className="mt-3 flex gap-3">
+              <button
+                type="button"
+                onClick={clearCanvas}
+                className="flex items-center gap-2 px-4 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
+              >
+                <FaTrashAlt /> Limpiar
+              </button>
+              <button
+                type="button"
+                onClick={saveCanvas}
+                className="flex items-center gap-2 px-4 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+              >
+                <FaSave /> Guardar Firma
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 mt-2">Dibuja tu firma en el área de arriba</p>
+          </div>
+        )}
 
-      {!value && (
-        <p className="mt-4 text-sm text-gray-500 text-center">
-          Puedes subir una imagen de tu firma o crearla digitalmente usando el canvas.
-        </p>
-      )}
+        {/* Preview of saved signature */}
+        {value && (
+          <div className="mt-6">
+            <p className="text-sm text-gray-600 mb-2">Vista previa de la firma:</p>
+            <img src={value} alt="Firma guardada" className="max-w-xs border rounded shadow" />
+          </div>
+        )}
+
+        {!value && (
+          <p className="mt-4 text-sm text-gray-500 text-center">
+            Puedes subir una imagen de tu firma o crearla digitalmente usando el canvas.
+          </p>
+        )}
+      </div>
     </div>
   );
 }
