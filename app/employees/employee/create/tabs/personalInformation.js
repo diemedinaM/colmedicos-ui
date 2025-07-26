@@ -204,14 +204,48 @@ const emergencyContactGroup = {
     alignment: "right",
     widgets: [
         {
-            key: "emergency_contact_name",
-            component: TextInput,
-            props: {
-                name: "name",
-                label: "Nombre",
+            key: "emergency_contacts",
+            variant: "stackedInline",
+            min: 1,
+            max: 3,
+            props: { name: "emergency_contacts" },
+            label: "Contacto de emergencia",
+            subWidgets: [
+                {
+                    key: "emergency_contact_name",
+                    component: TextInput,
+                    props: {
+                        name: "name",
+                        label: "Nombre",
 
-            }
-        },
+                    }
+                },
+                {
+                    key: "emergency_contact_phone",
+                    component: TextInput,
+                    props: {
+                        name: "emergency_contact_phone",
+                        label: "Teléfono",
+                    }
+                },
+                {
+                    key: "emergency_contact_email",
+                    component: TextInput,
+                    props: {
+                        name: "emergency_contact_email",
+                        label: "Correo electrónico",
+                    }
+                },
+                {
+                    key: "emergency_contact_relationship",
+                    component: TextInput,
+                    props: {
+                        name: "emergency_contact_relationship",
+                        label: "Parentesco",
+                    }
+                }
+            ]
+        }
     ]
 }
 

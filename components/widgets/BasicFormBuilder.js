@@ -6,6 +6,7 @@ import {
     FormProvider,
     Controller,
     useFormContext,
+    useFieldArray,
 } from "react-hook-form";
 
 // Main FormBuilder component
@@ -176,15 +177,81 @@ function GroupRenderer({ group }) {
     );
 }
 
+// StackedInline component for array fields
+function StackedInline({ name, min = 1, max = 5, widgets, label }) {
+    const { control, watch } = useFormContext();
+    const { fields, append, remove } = useFieldArray({ control, name });
+    const values = watch(name) || [];
+    const canAdd = fields.length < max;
+    const canRemove = fields.length > min;
+
+    return (
+        <div className="flex flex-col gap-4">
+            {fields.map((field, idx) => (
+                <div key={field.id} className="border border-gray-200 rounded-md p-4 relative bg-gray-50">
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="font-semibold text-gray-700">
+                            {label ? `${label.charAt(0).toUpperCase() + label.slice(1)} ${idx + 1}` : `#${idx + 1}`}
+                        </span>
+                        <button
+                            type="button"
+                            onClick={() => remove(idx)}
+                            disabled={!canRemove}
+                            aria-label="Eliminar"
+                            className="text-red-500 hover:text-red-700 text-sm font-semibold disabled:opacity-50"
+                        >
+                            Eliminar
+                        </button>
+                    </div>
+                    <div className="grid grid-cols-1 gap-4">
+                        {widgets.map((widget) => (
+                            <WidgetRenderer
+                                key={widget.key}
+                                widget={{
+                                    ...widget,
+                                    props: {
+                                        ...((typeof widget.props === "function") ? widget.props() : widget.props),
+                                        name: `${name}[${idx}].${widget.props.name}`,
+                                    },
+                                }}
+                            />
+                        ))}
+                    </div>
+                </div>
+            ))}
+            <button
+                type="button"
+                onClick={() => append({})}
+                disabled={!canAdd}
+                className="text-blue-600 hover:text-blue-800 text-sm font-semibold disabled:opacity-50 mt-2 self-end"
+            >
+                {`Agregar${label ? ` ${label}` : ''}`}
+            </button>
+        </div>
+    );
+}
+
 // Renders individual widget, integrates with React Hook Form if `name` prop is provided
 function WidgetRenderer({ widget }) {
-    const { component: Component, props } = widget;
+    const { component: Component, props, variant, subWidgets: subWidgets, min, max, label } = widget;
     const methods = useFormContext();
     const widgetProps = typeof props === "function"
         ? props(methods)
         : props;
 
-    // console.log("Widget", widget.key, "props", widgetProps);
+    // Support for stackedInline variant
+    if (variant === "stackedInline") {
+        return (
+            <StackedInline
+                name={widgetProps.name}
+                min={min}
+                max={max}
+                widgets={subWidgets}
+                label={label}
+            />
+        );
+    }
+
     if (widgetProps.name) {
         return (
             <Controller
