@@ -4,20 +4,21 @@ import CustomDatePicker from "@/components/widgets/DatePicker";
 import TextInput from "@/components/widgets/TextInput";
 import SimpleSignatureInput from "@/components/widgets/SimpleSignatureInput";
 import ToggleButton from "@/components/widgets/ToggleButton";
-import NumberInput from "@/components/widgets/NumberInput";
 
+
+const tabPrefix = "pi_";
 
 const personalInformationGroup = {
-    key: "personal_information",
+    key: `${tabPrefix}personal_information`,
     title: "Información personal",
     variant: "stack",
     alignment: "left",
     widgets: [
         {
-            key: "document_type",
+            key: `${tabPrefix}document_type`,
             component: SimpleModelDropdown,
             props: {
-                name: "document_type",
+                name: `${tabPrefix}document_type`,
                 label: "Tipo de documento",
                 appName: "common",
                 modelName: "document-type",
@@ -25,42 +26,42 @@ const personalInformationGroup = {
             },
         },
         {
-            key: "document_number",
+            key: `${tabPrefix}document_number`,
             component: TextInput,
             props: {
-                name: "document_number",
+                name: `${tabPrefix}document_number`,
                 label: "Documento",
             },
         },
         {
-            key: "expiration_date",
+            key: `${tabPrefix}expiration_date`,
             component: CustomDatePicker,
             props: {
-                name: "expiration_date",
+                name: `${tabPrefix}expiration_date`,
                 label: "Fecha de nacimiento",
             },
         },
         {
-            key: "first_name",
+            key: `${tabPrefix}first_name`,
             component: TextInput,
             props: {
-                name: "first_name",
+                name: `${tabPrefix}first_name`,
                 label: "Nombres",
             },
         },
         {
-            key: "last_name",
+            key: `${tabPrefix}last_name`,
             component: TextInput,
             props: {
-                name: "last_name",
+                name: `${tabPrefix}last_name`,
                 label: "Apellidos",
             },
         },
         {
-            key: "gender",
+            key: `${tabPrefix}gender`,
             component: SimpleModelDropdown,
             props: {
-                name: "gender",
+                name: `${tabPrefix}gender`,
                 label: "Género",
                 appName: "employees",
                 modelName: "gender",
@@ -68,10 +69,10 @@ const personalInformationGroup = {
             },
         },
         {
-            key: "ethnic-group",
+            key: `${tabPrefix}ethnic_group`,
             component: SimpleModelDropdown,
             props: {
-                name: "ethnic_group",
+                name: `${tabPrefix}ethnic_group`,
                 label: "Grupo étnico",
                 appName: "employees",
                 modelName: "ethnic-group",
@@ -79,10 +80,10 @@ const personalInformationGroup = {
             },
         },
         {
-            key: "marital-status",
+            key: `${tabPrefix}marital_status`,
             component: SimpleModelDropdown,
             props: {
-                name: "marital_status",
+                name: `${tabPrefix}marital_status`,
                 label: "Estado civil",
                 appName: "employees",
                 modelName: "marital-status",
@@ -93,16 +94,16 @@ const personalInformationGroup = {
 }
 
 const locationInformationGroup = {
-    key: "location_information",
+    key: `${tabPrefix}location_information`,
     title: "Ubicación",
     variant: "stack",
     alignment: "right",
     widgets: [
         {
-            key: "country",
+            key: `${tabPrefix}country`,
             component: SimpleModelDropdown,
             props: {
-                name: "country",
+                name: `${tabPrefix}country`,
                 label: "País",
                 appName: "common",
                 modelName: "country",
@@ -110,61 +111,61 @@ const locationInformationGroup = {
             },
         },
         {
-            key: "province",
+            key: `${tabPrefix}province`,
             component: DynamicModelDropdown,
             // Use a function to access form state
             props: {
-                name: "province",
+                name: `${tabPrefix}province`,
                 label: "Departamento",
                 appName: "common",
                 modelName: "province",
                 displayField: "name",
-                parentField: "country",
+                parentField: `${tabPrefix}country`,
                 query: "country",
-                clearFieldsOnChange: ["city"],
+                clearFieldsOnChange: [`${tabPrefix}city`],
             },
         },
         {
-            key: "city",
+            key: `${tabPrefix}city`,
             component: DynamicModelDropdown,
             // Use a function to access form state
             props: {
-                name: "city",
+                name: `${tabPrefix}city`,
                 label: "Ciudad",
                 appName: "common",
                 modelName: "city",
                 displayField: "name",
-                parentField: "province",
+                parentField: `${tabPrefix}province`,
                 query: "province",
             },
         },
         {
-            key: "neighborhood",
+            key: `${tabPrefix}neighborhood`,
             component: TextInput,
             props: {
-                name: "neighborhood",
+                name: `${tabPrefix}neighborhood`,
                 label: "Barrio",
             },
         },
         {
-            key: "address",
+            key: `${tabPrefix}address`,
             component: TextInput,
             props: {
-                name: "address",
+                name: `${tabPrefix}address`,
                 label: "Dirección",
             },
         },
         {
-            key: "social_class",
+            key: `${tabPrefix}social_class`,
             component: DynamicModelDropdown,
             // Use a function to access form state
             props: {
-                name: "social_class",
+                name: `${tabPrefix}social_class`,
                 label: "Estrato",
                 appName: "employees",
                 modelName: "social-class",
                 displayField: "name",
-                parentField: "country",
+                parentField: `${tabPrefix}country`,
                 query: "country",
             },
         },
@@ -172,25 +173,25 @@ const locationInformationGroup = {
 }
 
 const contactInformationGroup = {
-    key: "contact_information",
+    key: `${tabPrefix}contact_information`,
     title: "Contacto",
     variant: "stack",
     alignment: "right",
     widgets: [
         {
-            key: "personal_email",
+            key: `${tabPrefix}personal_email`,
             component: TextInput,
             props: {
-                name: "personal_email",
+                name: `${tabPrefix}personal_email`,
                 label: "Correo personal",
 
             }
         },
         {
-            key: "username",
+            key: `${tabPrefix}username`,
             component: TextInput,
             props: {
-                name: "username",
+                name: `${tabPrefix}username`,
                 label: "Usuario",
 
             }
@@ -199,49 +200,49 @@ const contactInformationGroup = {
 }
 
 const emergencyContactGroup = {
-    key: "emergency_contact",
+    key: `${tabPrefix}emergency_contact`,
     title: "Contacto de emergencia",
     variant: "stack",
-    alignment: "right",
+    alignment: "left",
     widgets: [
         {
-            key: "emergency_contacts",
+            key: `${tabPrefix}emergency_contacts`,
             variant: "stackedInline",
             min: 1,
             max: 3,
-            props: { name: "emergency_contacts" },
+            props: { name: `${tabPrefix}emergency_contacts` },
             label: "Contacto de emergencia",
             subWidgets: [
                 {
-                    key: "emergency_contact_name",
+                    key: `${tabPrefix}emergency_contact_name`,
                     component: TextInput,
                     props: {
-                        name: "name",
+                        name: `${tabPrefix}emergency_contact_name`,
                         label: "Nombre",
 
                     }
                 },
                 {
-                    key: "emergency_contact_phone",
+                    key: `${tabPrefix}emergency_contact_phone`,
                     component: TextInput,
                     props: {
-                        name: "emergency_contact_phone",
+                        name: `${tabPrefix}emergency_contact_phone`,
                         label: "Teléfono",
                     }
                 },
                 {
-                    key: "emergency_contact_email",
+                    key: `${tabPrefix}emergency_contact_email`,
                     component: TextInput,
                     props: {
-                        name: "emergency_contact_email",
+                        name: `${tabPrefix}emergency_contact_email`,
                         label: "Correo electrónico",
                     }
                 },
                 {
-                    key: "emergency_contact_relationship",
+                    key: `${tabPrefix}emergency_contact_relationship`,
                     component: TextInput,
                     props: {
-                        name: "emergency_contact_relationship",
+                        name: `${tabPrefix}emergency_contact_relationship`,
                         label: "Parentesco",
                     }
                 }
@@ -250,35 +251,34 @@ const emergencyContactGroup = {
     ]
 }
 
-
 const dependentsInformationGroup = {
-    key: "dependents_information",
+    key: `${tabPrefix}dependents_information`,
     title: "Dependientes",
     variant: "stack",
-    alignment: "right",
+    alignment: "left",
     widgets: [
         {
-            key: "has_dependents",
+            key: `${tabPrefix}has_dependents`,
             component: ToggleButton,
             props: {
-                name: "has_dependents",
+                name: `${tabPrefix}has_dependents`,
                 label: "¿Tiene dependientes?",
             },
         },
         {
-            key: "dependents",
+            key: `${tabPrefix}dependents`,
             variant: "stackedInline",
             min: 0,
             max: 10,
-            props: { name: "dependents" },
+            props: { name: `${tabPrefix}dependents` },
             label: "Dependiente",
-            hideOnToggle: { field: "has_dependents", value: true }, // Hide if has_dependents is false
+            hideOnToggle: { field: `${tabPrefix}has_dependents`, value: true }, // Hide if has_dependents is false
             subWidgets: [
                 {
-                    key: "dependent_document_type",
+                    key: `${tabPrefix}dependent_document_type`,
                     component: SimpleModelDropdown,
                     props: {
-                        name: "dependent_document_type",
+                        name: `${tabPrefix}dependent_document_type`,
                         label: "Tipo de documento",
                         appName: "common",
                         modelName: "document-type",
@@ -286,34 +286,34 @@ const dependentsInformationGroup = {
                     }
                 },
                 {
-                    key: "dependent_document",
+                    key: `${tabPrefix}dependent_document`,
                     component: TextInput,
                     props: {
-                        name: " ",
+                        name: `${tabPrefix}dependent_document`,
                         label: "Documento",
                     }
                 },
                 {
-                    key: "dependent_name",
+                    key: `${tabPrefix}dependent_name`,
                     component: TextInput,
                     props: {
-                        name: "dependent_name",
+                        name: `${tabPrefix}dependent_name`,
                         label: "Nombre",
                     }
                 },
                 {
-                    key: "dependent_birth_date",
+                    key: `${tabPrefix}dependent_birth_date`,
                     component: CustomDatePicker,
                     props: {
-                        name: "dependent_birth_date",
+                        name: `${tabPrefix}dependent_birth_date`,
                         label: "Fecha de nacimiento",
                     }
                 },
                 {
-                    key: "dependent_relationship",
+                    key: `${tabPrefix}dependent_relationship`,
                     component: SimpleModelDropdown,
                     props: {
-                        name: "dependent_relationship",
+                        name: `${tabPrefix}dependent_relationship`,
                         label: "Parentesco",
                         appName: "common",
                         modelName: "relationship",
@@ -326,33 +326,33 @@ const dependentsInformationGroup = {
 }
 
 const petInformationGroup = {
-    key: "pet_information",
+    key: `${tabPrefix}pet_information`,
     title: "Mascotas",
     variant: "stack",
-    alignment: "right",
+    alignment: "left",
     widgets: [
         {
-            key: "has_pets",
+            key: `${tabPrefix}has_pets`,
             component: ToggleButton,
             props: {
-                name: "has_pets",
+                name: `${tabPrefix}has_pets`,
                 label: "¿Tiene mascotas?",
             },
         },
         {
-            key: "pets",
+            key: `${tabPrefix}pets`,
             variant: "stackedInline",
             min: 0,
             max: 100,
-            props: { name: "pets" },
+            props: { name: `${tabPrefix}pets` },
             label: "Mascota",
-            hideOnToggle: { field: "has_pets", value: true }, // Hide if has_pets is false
+            hideOnToggle: { field: `${tabPrefix}has_pets`, value: true }, // Hide if has_pets is false
             subWidgets: [
                 {
-                    key: "pet_type",
+                    key: `${tabPrefix}pet_type`,
                     component: SimpleModelDropdown,
                     props: {
-                        name: "pet_type",
+                        name: `${tabPrefix}pet_type`,
                         label: "Tipo de mascota",
                         appName: "common",
                         modelName: "pet",
@@ -365,16 +365,16 @@ const petInformationGroup = {
 }
 
 const signatureGroup = {
-    key: "signature",
+    key: `${tabPrefix}signature`,
     title: "Firma",
     variant: "stack",
-    alignment: "left",
+    alignment: "right",
     widgets: [
         {
-            key: "signature",
+            key: `${tabPrefix}signature`,
             component: SimpleSignatureInput,
             props: {
-                name: "signature",
+                name: `${tabPrefix}signature`,
                 label: "Firma",
             },
         },
@@ -383,7 +383,7 @@ const signatureGroup = {
 
 
 const personalInformationTab = {
-    key: "personal_information",
+    key: `${tabPrefix}personal_information`,
     label: "Información personal",
     groups: [
         personalInformationGroup,
@@ -395,5 +395,6 @@ const personalInformationTab = {
         petInformationGroup
     ],
 }
+
 
 export default personalInformationTab;

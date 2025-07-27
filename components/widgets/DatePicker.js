@@ -4,6 +4,29 @@ import "react-datepicker/dist/react-datepicker.css";
 import { es } from "date-fns/locale";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
+/**
+ * DatePicker - A date selection input. Allows users to pick a date from a calendar UI.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} props.name - The field name for form state (required).
+ * @param {string} [props.label] - The label for the date picker.
+ * @param {Date|string} [props.value] - The selected date.
+ * @param {function} [props.onChange] - Callback for date changes.
+ * @param {boolean} [props.disabled] - Disables the picker if true.
+ * @param {Date|string} [props.minDate] - Minimum selectable date.
+ * @param {Date|string} [props.maxDate] - Maximum selectable date.
+ * @param {string} [props.tooltip] - Tooltip help text.
+ *
+ * @example
+ * <DatePicker
+ *   name="birth_date"
+ *   label="Birth Date"
+ *   value={birthDate}
+ *   onChange={setBirthDate}
+ *   tooltip="Select your date of birth."
+ * />
+ */
 export default function CustomDatePicker({
     name,
     label,

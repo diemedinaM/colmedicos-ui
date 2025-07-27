@@ -14,10 +14,7 @@ import hiringNoveltyTab from "./tabs/hiringNovelty";
 
 
 const schema = {
-    initialValues: {
-        permissionGroup: null,
-        username: "",
-    },
+    initialValues: {},
     tabs: [
         personalInformationTab,
         academicInformationTab,

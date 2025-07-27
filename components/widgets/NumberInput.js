@@ -1,3 +1,30 @@
+/**
+ * NumberInput - A numeric input field for forms. Restricts input to numbers and can be configured for min/max values.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} props.name - The field name for form state (required).
+ * @param {string} [props.label] - The label for the input.
+ * @param {number} [props.value] - The current value.
+ * @param {function} [props.onChange] - Callback for value changes.
+ * @param {number} [props.min] - Minimum allowed value.
+ * @param {number} [props.max] - Maximum allowed value.
+ * @param {number} [props.step] - Step increment.
+ * @param {boolean} [props.disabled] - Disables the input if true.
+ * @param {string} [props.placeholder] - Placeholder text.
+ * @param {string} [props.tooltip] - Tooltip help text.
+ *
+ * @example
+ * <NumberInput
+ *   name="age"
+ *   label="Age"
+ *   value={age}
+ *   onChange={setAge}
+ *   min={0}
+ *   max={120}
+ *   tooltip="Enter your age in years."
+ * />
+ */
 "use client";
 
 import { FaPlus, FaMinus } from "react-icons/fa";
