@@ -12,6 +12,35 @@ if (typeof window !== "undefined") {
     });
 }
 
+/**
+ * SimpleModelDropdown - A dropdown/select input that fetches and displays options from a backend model.
+ * Useful for static or rarely-changing lists.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} props.name - The field name for form state (required).
+ * @param {string} [props.label] - The label for the dropdown.
+ * @param {string} props.appName - The backend app name for fetching options (required).
+ * @param {string} props.modelName - The backend model name for fetching options (required).
+ * @param {string} [props.displayField] - The field to display in the dropdown (default: "name").
+ * @param {Object} [props.params] - Additional query parameters for fetching options.
+ * @param {Object|string} [props.value] - The selected value.
+ * @param {function} [props.onChange] - Callback for selection changes.
+ * @param {boolean} [props.disabled] - Disables the dropdown if true.
+ * @param {string} [props.tooltip] - Tooltip help text.
+ *
+ * @example
+ * <SimpleModelDropdown
+ *   name="country"
+ *   label="Country"
+ *   appName="common"
+ *   modelName="country"
+ *   displayField="name"
+ *   value={country}
+ *   onChange={setCountry}
+ *   tooltip="Select your country of residence."
+ * />
+ */
 export default function SimpleModelDropdown({
     name,
     label,

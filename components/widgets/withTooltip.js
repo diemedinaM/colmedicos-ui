@@ -34,6 +34,24 @@ const tooltipBoxStyle = {
     boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
 };
 
+/**
+ * withTooltip - Higher-order component that wraps any widget and displays a blue "?" icon next to it.
+ * When hovered, a tooltip with the provided help text appears.
+ *
+ * @param {React.ComponentType} Component - The widget component to wrap.
+ * @returns {React.FC} - A new component that renders the original widget with a tooltip if the `tooltip` prop is provided.
+ *
+ * @example
+ * import withTooltip from './withTooltip';
+ *
+ * const TooltipTextInput = withTooltip(TextInput);
+ *
+ * <TooltipTextInput
+ *   name="email"
+ *   label="Email"
+ *   tooltip="Enter your email address."
+ * />
+ */
 export default function withToolTip(Component) {
     return function WithToolTipComponent(props) {
         const { tooltip, ...rest } = props;

@@ -4,6 +4,30 @@ import { useRef, useState, useEffect } from "react";
 import { FaUpload, FaPen, FaTrashAlt, FaSave } from "react-icons/fa";
 import clsx from "clsx";
 
+/**
+ * SimpleSignatureInput - A signature input widget that allows users to draw and submit their signature.
+ * Useful for forms requiring digital signatures.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} props.name - The field name for form state (required).
+ * @param {string} [props.label] - The label for the signature input.
+ * @param {string} [props.value] - The signature data (e.g., as a base64 string).
+ * @param {function} [props.onChange] - Callback when the signature changes.
+ * @param {boolean} [props.disabled] - Disables the input if true.
+ * @param {boolean} [props.clearable] - If true, allows the user to clear the signature.
+ * @param {string} [props.tooltip] - Tooltip help text.
+ *
+ * @example
+ * <SimpleSignatureInput
+ *   name="signature"
+ *   label="Signature"
+ *   value={signature}
+ *   onChange={setSignature}
+ *   clearable
+ *   tooltip="Draw your signature in the box."
+ * />
+ */
 export default function SimpleSignatureInput({ name, label, value, onChange }) {
   const [tab, setTab] = useState("upload"); // "upload" | "draw"
   // const [preview, setPreview] = useState(value || null);

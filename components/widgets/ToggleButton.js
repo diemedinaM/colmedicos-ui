@@ -1,3 +1,24 @@
+/**
+ * ToggleButton - A switch-style toggle button for boolean values (on/off, yes/no).
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} props.name - The field name for form state (required).
+ * @param {string} [props.label] - The label for the toggle.
+ * @param {boolean} [props.value] - Current toggle state.
+ * @param {function} [props.onChange] - Callback for toggle changes.
+ * @param {boolean} [props.disabled] - Disables the toggle if true.
+ * @param {string} [props.tooltip] - Tooltip help text.
+ *
+ * @example
+ * <ToggleButton
+ *   name="has_pets"
+ *   label="Do you have pets?"
+ *   value={hasPets}
+ *   onChange={setHasPets}
+ *   tooltip="Toggle if you have any pets at home."
+ * />
+ */
 "use client";
 
 export default function ToggleButton({
